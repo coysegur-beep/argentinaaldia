@@ -11,9 +11,11 @@
     "astro": "astro",
     "og:generate": "node scripts/generate-og-png.mjs",
     "migrate:samples": "tsx scripts/migrate-samples-to-sanity.mjs",
-    "migrate:real": "tsx scripts/migrate-real-to-sanity.mjs"
+    "migrate:real": "tsx scripts/migrate-real-to-sanity.mjs",
+    "generate-articles": "node scripts/generate-articles.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.95.1",
     "@astrojs/cloudflare": "^12.5.0",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.4",

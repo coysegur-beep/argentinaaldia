@@ -1,0 +1,42 @@
+[
+  {
+    "id": "topic-001",
+    "titulo_sugerido": "Cuatro décadas de democracia: lo que el calendario no resuelve",
+    "categoria": "politica",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre los patrones políticos persistentes desde 1983: alternancias, tensiones institucionales, calidad democrática como deuda pendiente. Evitar nombrar gobiernos puntuales o atribuir responsabilidades a personas específicas; trabajar con tendencias estructurales.",
+    "prioridad": 1
+  },
+  {
+    "id": "topic-002",
+    "titulo_sugerido": "El peso del agro en la balanza comercial argentina",
+    "categoria": "economia",
+    "tipo": "analisis",
+    "prompt_extra": "Por qué Argentina exporta lo que exporta: estructura del comercio exterior dominada por commodities, vulnerabilidad a precios internacionales, tensión histórica entre campo y gobierno. Sin cifras inventadas; si necesitás un dato específico, dejalo en abstracto o pedilo en pending_facts.",
+    "prioridad": 1
+  },
+  {
+    "id": "topic-003",
+    "titulo_sugerido": "Cómo funciona el cepo cambiario, en simple",
+    "categoria": "economia",
+    "tipo": "explicativo",
+    "prompt_extra": "Explicativo didáctico para lector general. Qué es el cepo, por qué surgen las brechas (oficial, blue, MEP, CCL), qué consecuencias tiene en la economía cotidiana. Tono pedagógico, sin opinar de gestiones específicas.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-004",
+    "titulo_sugerido": "Federalismo argentino: la promesa que la coparticipación no resuelve",
+    "categoria": "provincias",
+    "tipo": "opinion",
+    "prompt_extra": "Reflexión sobre la asimetría histórica entre el centro (Buenos Aires) y el interior. La ley de coparticipación, la pulseada por recursos, las economías regionales subordinadas a la macro nacional. Marco histórico, sin nombrar funcionarios.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-005",
+    "titulo_sugerido": "Cosquín, Mercedes Sosa y el folclore como identidad",
+    "categoria": "cultura",
+    "tipo": "opinion",
+    "prompt_extra": "Mirada cultural sobre el lugar del folclore en la identidad argentina contemporánea. Cosquín como ritual anual, la figura de Mercedes Sosa, la tensión entre tradición y consumo digital. Voz editorial argentina, voseo aceptable.",
+    "prioridad": 3
+  }
+]
