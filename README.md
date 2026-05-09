@@ -78,7 +78,7 @@ Para la guía editorial completa (cómo cargar las 9 categorías, autores, prime
 
 ## Generación automática de contenido
 
-El proyecto incluye un script (`scripts/generate-articles.mjs`) que llama a la Claude API para producir notas de opinión/análisis a partir de una cola de temas. El output va a Sanity como **drafts** (nunca se publica solo) — el editor revisa, suma `imagenPrincipal`, y aprieta Publish desde el studio.
+El proyecto incluye un script (`scripts/generate-articles.mjs`) que llama a la Gemini API (Google) para producir notas de opinión/análisis a partir de una cola de temas. El output va a Sanity como **drafts** (nunca se publica solo) — el editor revisa, suma `imagenPrincipal`, y aprieta Publish desde el studio.
 
 ### Cómo cargar temas
 
@@ -106,7 +106,7 @@ Cuando el script consume un topic, le agrega `consumed: true`, `consumed_at`, y 
 
 ```bash
 # Configurar .env raíz con:
-#   ANTHROPIC_API_KEY=sk-ant-...
+#   GEMINI_API_KEY=AIza...                (https://aistudio.google.com/apikey)
 #   SANITY_PROJECT_ID=...
 #   SANITY_DATASET=production
 #   SANITY_TOKEN=...   (Editor)
@@ -116,6 +116,7 @@ npm run generate-articles
 
 Variables opcionales:
 
+- `GEMINI_MODEL=gemini-2.5-pro` — modelo a usar (default `gemini-2.5-flash`).
 - `DAILY_COUNT=3` — cuántos topics consumir por corrida (default 2).
 - `MONTHLY_TOKEN_LIMIT=500000` — tope mensual de tokens (default 1M).
 - `DRY_RUN=1` — no llama API ni escribe a Sanity ni actualiza queue. Para sanity-checks.
@@ -126,7 +127,7 @@ El workflow `.github/workflows/generate-news.yml` corre todos los días a **08:0
 
 **Secrets requeridos en el repo** (Settings → Secrets and variables → Actions):
 
-- `ANTHROPIC_API_KEY` — token de Claude API.
+- `GEMINI_API_KEY` — token de Gemini API. Generar gratis en [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (no requiere tarjeta de crédito).
 - `SANITY_PROJECT_ID` — id del proyecto.
 - `SANITY_DATASET` — `production`.
 - `SANITY_TOKEN` — token Editor para escribir drafts.
@@ -135,12 +136,12 @@ El workflow commitea automáticamente las actualizaciones de `src/data/topics-qu
 
 ### Costo aproximado
 
-Modelo: `claude-sonnet-4-6`. Por nota generada (~700-1000 palabras):
+Modelo por default: `gemini-2.5-flash`. Por nota generada (~700-1000 palabras):
 
 - Input: ~500 tokens (system prompt + brief).
 - Output: ~1500 tokens (JSON con cuerpo).
-- Costo estimado: **~USD 0,02 por nota** a precios de Sonnet 4.6 (~$3 / MTok input, ~$15 / MTok output).
-- 2 notas/día durante un mes: ~USD 1,50 mensual.
+- **Tier gratuito de Gemini cubre el uso normal (1-3 notas/día) sin tarjeta de crédito requerida.** El plan free de Gemini API permite varias requests por minuto y un tope diario de tokens más que suficiente para este volumen editorial.
+- Si se decide usar el modelo `gemini-2.5-pro` (mejor calidad), el tier free también lo cubre dentro de límites más bajos.
 
 El script logea uso de tokens al final de cada corrida y persiste el contador del mes en `data/ai-usage.json`. Si el contador supera `MONTHLY_TOKEN_LIMIT` aborta antes de la siguiente call.
 
@@ -148,7 +149,7 @@ El script logea uso de tokens al final de cada corrida y persiste el contador de
 
 Cada nota subida con `ai_generated: true` muestra el componente `<AiDisclosure>` arriba del cuerpo en la página de detalle, con el texto:
 
-> **Asistencia de IA** — Esta nota fue redactada con asistencia de inteligencia artificial (Claude) sobre la base de un brief editorial, y revisada antes de publicar.
+> **Asistencia de IA** — Esta nota fue redactada con asistencia de inteligencia artificial sobre la base de un brief editorial, y revisada antes de publicar.
 
 El editor puede destildar el flag desde el studio si la nota termina sin parecido al output original tras edits humanos sustantivos.
 
