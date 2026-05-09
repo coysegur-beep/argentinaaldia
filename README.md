@@ -74,6 +74,87 @@ Para la guía editorial completa (cómo cargar las 9 categorías, autores, prime
 | `npm run preview` | Sirve el build local para verificarlo antes del deploy |
 | `npx astro check` | Typecheck (TypeScript strict) sobre todos los `.astro` |
 | `npm run og:generate` | Regenera `public/og-default.png` y `public/logo-publisher.png` desde los SVG fuente. Correr cuando cambien los SVG o el branding. |
+| `npm run generate-articles` | Genera 1-3 notas de opinión/análisis con Claude API y las sube a Sanity como **drafts**. Ver sección "Generación automática de contenido". |
+
+## Generación automática de contenido
+
+El proyecto incluye un script (`scripts/generate-articles.mjs`) que llama a la Claude API para producir notas de opinión/análisis a partir de una cola de temas. El output va a Sanity como **drafts** (nunca se publica solo) — el editor revisa, suma `imagenPrincipal`, y aprieta Publish desde el studio.
+
+### Cómo cargar temas
+
+Editá `src/data/topics-queue.json` sumando objetos al array. Shape:
+
+```json
+{
+  "id": "topic-006",
+  "titulo_sugerido": "Título tentativo (el modelo lo puede ajustar)",
+  "categoria": "economia",
+  "tipo": "analisis",
+  "prompt_extra": "Brief editorial: foco, perspectivas, qué no incluir.",
+  "prioridad": 2
+}
+```
+
+- **`categoria`**: tiene que ser un slug existente en Sanity (politica, economia, sociedad, cultura, deportes, agro, espectaculos, mundo, provincias).
+- **`tipo`**: `opinion` | `analisis` | `explicativo`.
+- **`prioridad`**: entero. Menor número = más prioridad.
+- **`id`**: único, secuencial. Sirve para identificar la entrada después de consumida.
+
+Cuando el script consume un topic, le agrega `consumed: true`, `consumed_at`, y `sanity_id`. El topic queda en el archivo (no se borra) — sirve como historial.
+
+### Correr manualmente (local)
+
+```bash
+# Configurar .env raíz con:
+#   ANTHROPIC_API_KEY=sk-ant-...
+#   SANITY_PROJECT_ID=...
+#   SANITY_DATASET=production
+#   SANITY_TOKEN=...   (Editor)
+
+npm run generate-articles
+```
+
+Variables opcionales:
+
+- `DAILY_COUNT=3` — cuántos topics consumir por corrida (default 2).
+- `MONTHLY_TOKEN_LIMIT=500000` — tope mensual de tokens (default 1M).
+- `DRY_RUN=1` — no llama API ni escribe a Sanity ni actualiza queue. Para sanity-checks.
+
+### GitHub Actions (cron diario)
+
+El workflow `.github/workflows/generate-news.yml` corre todos los días a **08:00 hora Argentina** (11:00 UTC). También se puede disparar manualmente desde la UI de GitHub Actions con override de `DAILY_COUNT` y `MONTHLY_TOKEN_LIMIT`.
+
+**Secrets requeridos en el repo** (Settings → Secrets and variables → Actions):
+
+- `ANTHROPIC_API_KEY` — token de Claude API.
+- `SANITY_PROJECT_ID` — id del proyecto.
+- `SANITY_DATASET` — `production`.
+- `SANITY_TOKEN` — token Editor para escribir drafts.
+
+El workflow commitea automáticamente las actualizaciones de `src/data/topics-queue.json` (consumidos) y `data/ai-usage.json` (tracking de tokens) con el mensaje `chore(ai): consume topics + update usage tracking [skip ci]`.
+
+### Costo aproximado
+
+Modelo: `claude-sonnet-4-6`. Por nota generada (~700-1000 palabras):
+
+- Input: ~500 tokens (system prompt + brief).
+- Output: ~1500 tokens (JSON con cuerpo).
+- Costo estimado: **~USD 0,02 por nota** a precios de Sonnet 4.6 (~$3 / MTok input, ~$15 / MTok output).
+- 2 notas/día durante un mes: ~USD 1,50 mensual.
+
+El script logea uso de tokens al final de cada corrida y persiste el contador del mes en `data/ai-usage.json`. Si el contador supera `MONTHLY_TOKEN_LIMIT` aborta antes de la siguiente call.
+
+### Disclosure visible
+
+Cada nota subida con `ai_generated: true` muestra el componente `<AiDisclosure>` arriba del cuerpo en la página de detalle, con el texto:
+
+> **Asistencia de IA** — Esta nota fue redactada con asistencia de inteligencia artificial (Claude) sobre la base de un brief editorial, y revisada antes de publicar.
+
+El editor puede destildar el flag desde el studio si la nota termina sin parecido al output original tras edits humanos sustantivos.
+
+### Reglas duras del system prompt
+
+El modelo tiene prohibido inventar declaraciones textuales, citas atribuidas, datos numéricos precisos, o fechas específicas. Si necesita un dato, lo agrega al campo `pending_facts` del JSON para que el editor lo verifique antes de publicar. El script imprime esos `pending_facts` por consola en cada corrida.
 
 ## Estructura del repo
 
