@@ -193,28 +193,72 @@ async function main() {
       continue;
     }
 
-    const doc = {
-      _id: docId,
-      _type: 'article',
+    // Campos source-authoritative: sobrescriben en cada re-corrida.
+    const sourceFields = {
       titulo: a.titulo,
       slug: { _type: 'slug', current: a.slug },
-      ...(a.kicker ? { kicker: a.kicker } : {}),
       copete: a.copete,
       contenido,
       autor: { _type: 'reference', _ref: autId },
       categoria: { _type: 'reference', _ref: catId },
       tags: a.tags ?? [],
       fechaPublicacion: a.fechaPublicacion,
-      ...(a.fechaActualizacion ? { fechaActualizacion: a.fechaActualizacion } : {}),
-      esDestacada: !!a.esDestacada,
-      esCoverDelDia: !!a.esCoverDelDia,
       tiempoLectura: a.tiempoLectura,
-      // imagenPrincipal omitido per spec (asset upload manual desde el studio).
     };
 
     try {
-      await client.createOrReplace(doc);
-      console.log('  ✓ creada/actualizada');
+      // Existe? Si sí, patch parcial preservando campos editoriales que
+      // viven solo en Sanity (imagenPrincipal subida desde el studio o por
+      // upload-unsplash, esCoverDelDia decidido por el editor del día,
+      // esDestacada idem, ai_generated, etc.). Si no existe, create completo
+      // con defaults del source.
+      const existing = await client.fetch(
+        '*[_id == $id][0]._id',
+        { id: docId },
+      );
+
+      if (existing) {
+        let patchBuilder = client.patch(docId).set(sourceFields);
+
+        // kicker: source-authoritative con unset si el source lo borró
+        if (a.kicker) {
+          patchBuilder = patchBuilder.set({ kicker: a.kicker });
+        } else {
+          patchBuilder = patchBuilder.unset(['kicker']);
+        }
+
+        // fechaActualizacion: solo set si el source la define. No unset —
+        // el editor puede haberla sumado post-migración para señalar
+        // correcciones; preservar.
+        if (a.fechaActualizacion) {
+          patchBuilder = patchBuilder.set({
+            fechaActualizacion: a.fechaActualizacion,
+          });
+        }
+
+        // NO se setean: imagenPrincipal, esCoverDelDia, esDestacada,
+        // ai_generated, ni cualquier otro campo editor-authoritative que
+        // viva solo en Sanity. Sanity preserva lo que el patch no toca.
+
+        await patchBuilder.commit();
+        console.log('  ✓ actualizada (preserva imagenPrincipal/esCoverDelDia/esDestacada/ai_generated)');
+      } else {
+        // Doc nuevo: createOrReplace con todos los campos del source incluidos
+        // los defaults (esDestacada/esCoverDelDia=false). El editor los puede
+        // ajustar después desde el studio.
+        const fullDoc = {
+          _id: docId,
+          _type: 'article',
+          ...sourceFields,
+          ...(a.kicker ? { kicker: a.kicker } : {}),
+          ...(a.fechaActualizacion ? { fechaActualizacion: a.fechaActualizacion } : {}),
+          esDestacada: !!a.esDestacada,
+          esCoverDelDia: !!a.esCoverDelDia,
+          // imagenPrincipal omitido — el editor la sube manualmente.
+        };
+        await client.createOrReplace(fullDoc);
+        console.log('  ✓ creada');
+      }
       okCount++;
     } catch (err) {
       const reason = `error de API: ${err?.message ?? String(err)}`;
