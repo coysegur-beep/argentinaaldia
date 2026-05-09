@@ -132,6 +132,20 @@ Cada item sigue la misma estructura: descripción → por qué no se resolvió �
 - **Solución estándar:** empezar con lo más alto-valor primero. (a) **Playwright para 2-3 E2E críticos:** home renderiza con cover, una nota carga sin error, /buscar filtra correctamente. (b) **Vitest para unidades en `src/lib/seo.ts`:** `truncate()`, `ogImageUrl()`, builders de JSON-LD. Estas funciones son puras, fáciles de testear, alto retorno.
 - **Cuándo conviene resolverlo:** primer bug post-deploy que un test obvio hubiera evitado. O cuando el equipo crezca y "yo me acuerdo de lo que toqué" deja de ser estrategia válida.
 
+### 13. Scripts de migración deben preservar campos editoriales post-migración
+
+- **Categoría:** Pipeline / safety
+- **Archivos:** [scripts/migrate-real-to-sanity.mjs](scripts/migrate-real-to-sanity.mjs) (corregido en commit `a342973`), [scripts/migrate-samples-to-sanity.mjs](scripts/migrate-samples-to-sanity.mjs) (pendiente).
+- **Descripción del problema actual:** los scripts de migración usaban `client.createOrReplace(doc)` con un `doc` armado desde el source (`real-articles.ts` / `sample-articles.ts`) que omite `imagenPrincipal` a propósito (las imágenes se suben aparte vía `upload-unsplash-images.mjs` o manualmente desde el studio). Re-correr el migrate después de subir imágenes BORRABA esas imágenes — `createOrReplace` reemplaza el doc completo. Mismo riesgo con `esCoverDelDia`, `esDestacada`, `ai_generated`, `hotspot` y cualquier campo editor-authoritative que viva solo en Sanity.
+- **Por qué no se detectó cuando se escribió el script:** la primera corrida fue trivial (`createOrReplace` contra dataset vacío). El bug solo se manifiesta en la segunda corrida y siguientes, cuando ya hay campos editoriales agregados que el source no conoce. Salió a la luz cuando hubo que re-correr el script para propagar tags editoriales nuevos a Sanity y se perdieron las 30 imágenes recién subidas.
+- **Qué pasa si NO se resuelve:** cada cambio al source (sumar tags, corregir typo, ajustar copete) → re-corrida → re-borrado de imágenes y campos editoriales. Imposible iterar sobre el contenido sin perder trabajo de la redacción.
+- **Solución aplicada en migrate-real-to-sanity.mjs (commit `a342973`):** antes del write, fetchear `*[_id == $id][0]._id` para saber si el doc existe.
+  - Si existe: `client.patch(_id).set({...sourceFields}).commit()` — actualiza solo los campos pasados, preserva todo lo demás.
+  - Si no existe: `createOrReplace` con defaults (caso first-import).
+  - Clasificación de campos: **source-authoritative** (`titulo`, `copete`, `contenido`, `autor`, `categoria`, `tags`, `fechaPublicacion`, `tiempoLectura`, `kicker`) se sobrescriben siempre. **Editor-authoritative** (`imagenPrincipal`, `esCoverDelDia`, `esDestacada`, `ai_generated`, hotspot, y `fechaActualizacion` cuando el source no la define) se omiten del patch y Sanity los preserva.
+- **Pendiente para `migrate-samples-to-sanity.mjs`:** mismo refactor cuando ese script se vuelva a usar. Hoy crea drafts (`drafts.<slug>`) con `fetch + delete + createIfNotExists`, que tampoco preserva campos editoriales sumados al draft (poco probable en samples, pero la regla aplica).
+- **Cuándo conviene resolverlo:** el caso crítico (`real-articles`) ya está. Para `samples`, cuando se planee iterar sobre `sample-articles.ts` como source con re-corridas y haya algo en los drafts que valga preservar.
+
 ---
 
 ## Cómo usar este documento
