@@ -135,6 +135,14 @@ export default defineType({
       type: 'number',
       validation: (r) => r.required().min(1).max(60),
     }),
+    defineField({
+      name: 'ai_generated',
+      title: '¿Generada con asistencia de IA?',
+      type: 'boolean',
+      initialValue: false,
+      description:
+        'Marca true cuando la nota fue redactada con Claude API. Renderea el banner de disclosure en el detalle.',
+    }),
   ],
   preview: {
     select: {

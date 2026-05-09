@@ -89,10 +89,8 @@ export interface Article {
   esDestacada: boolean;
   esCoverDelDia: boolean;
   tiempoLectura: number;
+  /** True si la nota fue redactada con asistencia de IA (Claude API).
+   *  El detail page renderea <AiDisclosure /> cuando es true. */
+  ai_generated?: boolean;
 }
 
-export interface TickerItem {
-  label: string;
-  value: string;
-  change?: number;
-}

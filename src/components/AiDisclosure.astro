@@ -1,0 +1,26 @@
+---
+// Banner que se renderea cuando una nota fue redactada con asistencia de IA.
+// Va al inicio del cuerpo del artículo, después del header y antes del primer
+// párrafo. Tono sobrio, no decorativo — el lector tiene que ver claro que el
+// texto que viene fue producido con IA y revisado editorialmente.
+---
+
+<aside
+  role="note"
+  aria-label="Aviso sobre asistencia de IA"
+  class="mx-auto my-6 max-w-3xl border-l-4 border-celeste bg-bone px-4 py-3 sm:my-8 sm:px-6"
+>
+  <p
+    class="font-sans text-[11px] font-medium uppercase tracking-widest text-celeste-dark sm:text-[12px]"
+  >
+    Asistencia de IA
+  </p>
+  <p
+    class="mt-1.5 font-sans text-[14px] leading-relaxed text-carbon sm:text-[15px]"
+  >
+    Esta nota fue redactada con asistencia de inteligencia artificial (Claude)
+    sobre la base de un brief editorial, y revisada antes de publicar. Datos,
+    cifras y declaraciones se verifican contra fuentes; las interpretaciones
+    son responsabilidad de la redacción.
+  </p>
+</aside>

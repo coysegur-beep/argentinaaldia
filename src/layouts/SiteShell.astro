@@ -1,10 +1,9 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import HeaderBanner from '../components/HeaderBanner.astro';
-import Ticker from '../components/Ticker.astro';
 import SectionRail from '../components/SectionRail.astro';
 import Footer from '../components/Footer.astro';
-import type { CategorySlug, TickerItem } from '../types';
+import type { CategorySlug } from '../types';
 
 interface Props {
   title?: string;
@@ -31,7 +30,6 @@ interface Props {
   jsonLd?: object | object[];
 
   activeSection?: CategorySlug;
-  tickerItems?: TickerItem[];
 }
 
 const {
@@ -49,11 +47,10 @@ const {
   article,
   jsonLd,
   activeSection,
-  tickerItems,
 } = Astro.props;
 
 const fechaHoy = new Date('2026-05-06T08:00:00-03:00');
-const numeroEdicion = 4287;
+const numeroEdicion = 1;
 ---
 
 <BaseLayout
@@ -73,7 +70,6 @@ const numeroEdicion = 4287;
 >
   <div class="sticky top-0 z-40">
     <HeaderBanner fecha={fechaHoy} numeroEdicion={numeroEdicion} />
-    {tickerItems && tickerItems.length > 0 && <Ticker items={tickerItems} />}
     <SectionRail activeSection={activeSection} />
   </div>
   <slot name="below-header" />

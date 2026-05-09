@@ -100,7 +100,8 @@ const articleProjection = `{
   fechaActualizacion,
   esDestacada,
   esCoverDelDia,
-  tiempoLectura
+  tiempoLectura,
+  "ai_generated": coalesce(ai_generated, false)
 }`;
 
 // ============================================================

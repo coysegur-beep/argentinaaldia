@@ -17,7 +17,6 @@ import {
   getInvestigaciones,
   getJudiciales,
 } from '../data/content';
-import type { TickerItem } from '../types';
 import { newsMediaOrganizationSchema } from '../lib/seo';
 
 const cover = getCoverArticle();
@@ -29,16 +28,6 @@ const investigaciones = getInvestigaciones(6);
 const judiciales = getJudiciales(5);
 const masLeidas = getMostRead(5);
 
-const tickerItems: TickerItem[] = [
-  { label: 'Dólar oficial', value: '$1.040', change: 0.2 },
-  { label: 'Blue', value: '$1.180', change: -0.5 },
-  { label: 'MEP', value: '$1.165', change: 0.1 },
-  { label: 'CCL', value: '$1.190', change: 0.3 },
-  { label: 'IPC abril', value: '1,9%' },
-  { label: 'Riesgo país', value: '548 pbs', change: -1.2 },
-  { label: 'Merval', value: '1.928.450', change: 0.8 },
-];
-
 const siteOrigin = Astro.site ?? new URL('/', Astro.url);
 const orgSchema = newsMediaOrganizationSchema(siteOrigin);
 ---
@@ -48,7 +37,6 @@ const orgSchema = newsMediaOrganizationSchema(siteOrigin);
   description="Periodismo independiente, federal y editado. Política, economía, sociedad y cultura desde todas las provincias del país."
   ogType="website"
   jsonLd={orgSchema}
-  tickerItems={tickerItems}
 >
   {cover && <CoverStory article={cover} />}
   {cover && <div class="h-[2px] w-full bg-celeste" aria-hidden="true" />}
