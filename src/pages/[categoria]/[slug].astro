@@ -4,6 +4,7 @@ import SiteShell from '../../layouts/SiteShell.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import PortableTextRenderer from '../../components/PortableTextRenderer.astro';
 import SanityImage from '../../components/SanityImage.astro';
+import AiDisclosure from '../../components/AiDisclosure.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import { articles, getRelated } from '../../data/content';
 import { formatDate, formatTime } from '../../lib/format';
@@ -158,6 +159,7 @@ const breadcrumb = breadcrumbSchema(
     </figure>
 
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-10 sm:pb-14">
+      {article.ai_generated && <AiDisclosure />}
       <PortableTextRenderer blocks={article.contenido} />
     </div>
 
