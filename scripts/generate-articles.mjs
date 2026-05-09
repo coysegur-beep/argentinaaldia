@@ -1,23 +1,26 @@
 // =============================================================================
-// generate-articles.mjs — Generador de notas con asistencia de IA (Claude API)
+// generate-articles.mjs — Generador de notas con asistencia de IA (Gemini API)
 // =============================================================================
 //
 // Flujo:
 //   1. Lee `src/data/topics-queue.json`, filtra los topics no consumidos.
 //   2. Selecciona los próximos N (DAILY_COUNT, default 2) por prioridad.
-//   3. Para cada topic, llama a Claude API (claude-sonnet-4-6) con un system
-//      prompt periodístico estricto. Pide JSON estructurado.
+//   3. Para cada topic, llama a Gemini API (gemini-2.5-flash por default) con
+//      un system prompt periodístico estricto. Pide JSON estructurado.
 //   4. Convierte el `cuerpo_md` (markdown) a Portable Text simple para el
 //      campo `contenido` de Sanity.
 //   5. Sube cada nota a Sanity como **draft** (`drafts.ai-<slug>`) con
-//      `ai_generated: true`. El editor revisa y publica desde el studio.
+//      `ai_generated: true` y `aiModel` para auditoría. El editor revisa y
+//      publica desde el studio.
 //   6. Marca el topic con `consumed: true` + `consumed_at` + `sanity_id` en
 //      `topics-queue.json` (idempotente — re-correr saltea consumidos).
 //   7. Trackea uso de tokens en `data/ai-usage.json`. Aborta si supera
 //      MONTHLY_TOKEN_LIMIT (default 1.000.000) en el mes corriente.
 //
 // Variables de entorno:
-//   ANTHROPIC_API_KEY      requerida — token de la Claude API.
+//   GEMINI_API_KEY         requerida — token de la Gemini API
+//                                      (https://aistudio.google.com/apikey).
+//   GEMINI_MODEL           opcional   — default 'gemini-2.5-flash'.
 //   SANITY_PROJECT_ID      requerida — id del proyecto Sanity.
 //   SANITY_DATASET         requerida — dataset (production por default).
 //   SANITY_API_VERSION     opcional   — default 2024-03-15.
@@ -36,7 +39,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createClient } from '@sanity/client';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -58,7 +61,8 @@ try {
 // -----------------------------------------------------------------------------
 // 2. Configuración + validación de env
 // -----------------------------------------------------------------------------
-const ANTHROPIC_API_KEY = (process.env.ANTHROPIC_API_KEY ?? '').trim();
+const GEMINI_API_KEY = (process.env.GEMINI_API_KEY ?? '').trim();
+const GEMINI_MODEL = (process.env.GEMINI_MODEL ?? 'gemini-2.5-flash').trim();
 const SANITY_PROJECT_ID = (process.env.SANITY_PROJECT_ID ?? '').trim();
 const SANITY_DATASET = (process.env.SANITY_DATASET ?? 'production').trim();
 const SANITY_API_VERSION = (process.env.SANITY_API_VERSION ?? '2024-03-15').trim();
@@ -69,7 +73,7 @@ const MONTHLY_TOKEN_LIMIT = parseInt(process.env.MONTHLY_TOKEN_LIMIT ?? '1000000
 const DRY_RUN = process.env.DRY_RUN === '1';
 
 const missing = [];
-if (!ANTHROPIC_API_KEY && !DRY_RUN) missing.push('ANTHROPIC_API_KEY');
+if (!GEMINI_API_KEY && !DRY_RUN) missing.push('GEMINI_API_KEY');
 if (!SANITY_PROJECT_ID && !DRY_RUN) missing.push('SANITY_PROJECT_ID');
 if (!SANITY_TOKEN && !DRY_RUN) missing.push('SANITY_TOKEN');
 if (missing.length > 0) {
@@ -210,30 +214,22 @@ function buildUserPrompt(topic) {
 }
 
 // -----------------------------------------------------------------------------
-// 6. Llamada a Claude API con prefill de `{` para forzar JSON
+// 6. Llamada a Gemini API (responseMimeType: 'application/json' fuerza el JSON)
 // -----------------------------------------------------------------------------
-async function callClaude(client, topic) {
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 4096,
-    system: SYSTEM_PROMPT,
-    messages: [
-      { role: 'user', content: buildUserPrompt(topic) },
-      // Prefill: forzamos al modelo a continuar desde `{` para que el output
-      // sea JSON puro sin preámbulo. Despues prepend `{` al text recibido.
-      { role: 'assistant', content: '{' },
-    ],
-  });
+async function callModel(model, topic) {
+  // Gemini soporta `responseMimeType: 'application/json'` nativo en
+  // generationConfig, configurado al instanciar el modelo. Eso garantiza
+  // output JSON puro sin necesitar el prefill `{` que usaba Claude.
+  const result = await model.generateContent(buildUserPrompt(topic));
+  const text = result.response.text();
 
-  const textBlock = response.content.find((b) => b.type === 'text');
-  if (!textBlock) throw new Error('respuesta sin bloque text');
-
-  const fullJson = '{' + textBlock.text;
   let parsed;
   try {
-    parsed = JSON.parse(fullJson);
+    parsed = JSON.parse(text);
   } catch (err) {
-    throw new Error(`JSON inválido del modelo: ${err.message}\nOutput crudo:\n${fullJson.slice(0, 500)}...`);
+    throw new Error(
+      `JSON inválido del modelo: ${err.message}\nOutput crudo:\n${text.slice(0, 500)}...`,
+    );
   }
 
   // Validación mínima de shape — si falta algo crítico, error
@@ -246,8 +242,8 @@ async function callClaude(client, topic) {
   return {
     parsed,
     usage: {
-      input: response.usage?.input_tokens ?? 0,
-      output: response.usage?.output_tokens ?? 0,
+      input: result.response.usageMetadata?.promptTokenCount ?? 0,
+      output: result.response.usageMetadata?.candidatesTokenCount ?? 0,
     },
   };
 }
@@ -257,7 +253,8 @@ async function callClaude(client, topic) {
 // -----------------------------------------------------------------------------
 async function main() {
   console.log(`\n=== generate-articles · ${new Date().toISOString()} ===`);
-  if (DRY_RUN) console.log('[DRY_RUN=1] No se llamará a Claude API ni se escribirá a Sanity.');
+  console.log(`Modelo: ${GEMINI_MODEL}`);
+  if (DRY_RUN) console.log('[DRY_RUN=1] No se llamará a Gemini API ni se escribirá a Sanity.');
 
   // 7.1 — leer queue
   const queueRaw = JSON.parse(fs.readFileSync(TOPICS_PATH, 'utf8'));
@@ -282,7 +279,16 @@ async function main() {
   }
 
   // 7.3 — clientes (skipped en dry run)
-  const anthropic = DRY_RUN ? null : new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+  const aiModel = DRY_RUN
+    ? null
+    : new GoogleGenerativeAI(GEMINI_API_KEY).getGenerativeModel({
+        model: GEMINI_MODEL,
+        systemInstruction: SYSTEM_PROMPT,
+        generationConfig: {
+          responseMimeType: 'application/json',
+          maxOutputTokens: 4096,
+        },
+      });
   const sanity = DRY_RUN
     ? null
     : createClient({
@@ -338,11 +344,11 @@ async function main() {
         console.log('  [DRY_RUN] (saltado)');
         continue;
       }
-      const result = await callClaude(anthropic, topic);
+      const result = await callModel(aiModel, topic);
       parsed = result.parsed;
       callUsage = result.usage;
     } catch (err) {
-      const reason = `error Claude API: ${err.message}`;
+      const reason = `error Gemini API: ${err.message}`;
       console.warn(`  ✗ ${reason}`);
       skipped.push({ id: topic.id, reason });
       continue;
@@ -387,6 +393,7 @@ async function main() {
       esCoverDelDia: false,
       tiempoLectura: Math.max(3, Math.min(8, Number(parsed.tiempo_lectura_min) || 5)),
       ai_generated: true,
+      aiModel: GEMINI_MODEL,
       // imagenPrincipal omitido — el editor la sube manualmente al revisar
       // el draft. El schema marca el campo required, así que en el studio se
       // ve un warning rojo hasta que esté.
