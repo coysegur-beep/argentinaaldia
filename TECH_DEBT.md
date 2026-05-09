@@ -146,6 +146,16 @@ Cada item sigue la misma estructura: descripción → por qué no se resolvió �
 - **Pendiente para `migrate-samples-to-sanity.mjs`:** mismo refactor cuando ese script se vuelva a usar. Hoy crea drafts (`drafts.<slug>`) con `fetch + delete + createIfNotExists`, que tampoco preserva campos editoriales sumados al draft (poco probable en samples, pero la regla aplica).
 - **Cuándo conviene resolverlo:** el caso crítico (`real-articles`) ya está. Para `samples`, cuando se planee iterar sobre `sample-articles.ts` como source con re-corridas y haya algo en los drafts que valga preservar.
 
+### 14. Migración AI: Anthropic Claude → Google Gemini (free tier)
+
+- **Categoría:** Trade-off / vendor decision
+- **Archivos:** [scripts/generate-articles.mjs](scripts/generate-articles.mjs), [.github/workflows/generate-news.yml](.github/workflows/generate-news.yml), [package.json](package.json).
+- **Descripción del problema actual:** se migró el motor de generación de notas con asistencia de IA desde Anthropic Claude (`claude-sonnet-4-6`) a Google Gemini (`gemini-2.5-flash` por default). Razón: preferencia del dueño del proyecto por usar el tier gratuito de Gemini, que no requiere tarjeta de crédito ni billing setup, frente al modelo pague-por-uso de Anthropic. Decisión económica / de onboarding, no técnica.
+- **Por qué se hizo el switch ahora:** el sitio está pre-launch, sin presupuesto cargado. Tener el flow funcionando con $0 de costo recurrente baja la fricción para empezar a usar el cron diario. Si la calidad del output editorial resulta aceptable, queda así.
+- **Qué pasa si NO se revierte:** Gemini Flash tiende a ser más conciso y con menos matices de prosa que Claude Sonnet, especialmente en notas de opinión donde la voz argentina y el contexto histórico requieren cierta densidad. Posible degradación de calidad editorial respecto al baseline previo.
+- **Solución estándar (si hace falta volver a Claude):** revertir los commits de la migración (rango `f7bea31..7cb0295`), o re-aplicar manualmente: `npm uninstall @google/generative-ai && npm install @anthropic-ai/sdk`, restaurar el SDK call (`anthropic.messages.create({...})`), volver a setear `ANTHROPIC_API_KEY` como secret y env var del workflow, actualizar README. El campo `aiModel` que cada doc de Sanity guarda sirve de auditoría para identificar qué notas vinieron de qué modelo.
+- **Cuándo conviene resolverlo:** primera revisión editorial donde el editor reporte que la calidad de output cae bajo umbral aceptable (notas que requieren rewrite > 50% del cuerpo), o cuando se sume presupuesto y la decisión de costo deje de ser bloqueante. Mientras tanto, dejarlo en Gemini.
+
 ---
 
 ## Cómo usar este documento
