@@ -15,10 +15,10 @@
     "generate-articles": "node scripts/generate-articles.mjs"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.95.1",
     "@astrojs/cloudflare": "^12.5.0",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.4",
+    "@google/generative-ai": "^0.24.1",
     "@portabletext/to-html": "^2.0.14",
     "@sanity/client": "^6.22.5",
     "astro": "^5.1.5",
