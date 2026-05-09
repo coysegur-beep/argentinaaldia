@@ -8,7 +8,7 @@ name: generate-news
 # y MONTHLY_TOKEN_LIMIT.
 #
 # Secrets requeridos en el repo:
-#   ANTHROPIC_API_KEY   token de la Claude API (con permiso de write)
+#   GEMINI_API_KEY      token de la Gemini API (https://aistudio.google.com/apikey)
 #   SANITY_PROJECT_ID   id del proyecto Sanity
 #   SANITY_DATASET      dataset (típicamente "production")
 #   SANITY_TOKEN        token Editor de Sanity para escribir drafts
@@ -50,7 +50,7 @@ jobs:
 
       - name: Generate articles
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
           SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
