@@ -1,0 +1,76 @@
+---
+import SiteShell from '../layouts/SiteShell.astro';
+
+const title = 'Política de privacidad - Argentina al día';
+const description =
+  'Política de privacidad de Argentina al día conforme a la Ley 25.326 de Protección de Datos Personales. Tus derechos sobre datos personales y cómo ejercerlos.';
+
+const proseP =
+  'font-serif text-[16px] leading-[1.7] text-carbon sm:text-[17px] lg:text-[18px]';
+const proseH2 =
+  'mt-8 mb-3 font-serif text-[22px] font-medium leading-snug text-ink sm:text-[24px] lg:text-[26px]';
+---
+
+<SiteShell title={title} description={description} canonical="/privacidad">
+  <main class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
+    <header class="text-center">
+      <p class="font-sans text-[12px] font-medium uppercase tracking-widest text-celeste-dark sm:text-[13px]">
+        Legal
+      </p>
+      <div
+        class="mx-auto my-4 h-[2px] w-16 bg-celeste-dark sm:w-20"
+        aria-hidden="true"
+      >
+      </div>
+      <h1
+        class="font-serif text-[36px] font-medium leading-[1.1] tracking-tight text-ink sm:text-[48px] lg:text-[60px]"
+      >
+        Política de privacidad
+      </h1>
+      <p class="mt-6 font-sans text-[13px] uppercase tracking-wider text-carbon/70">
+        Última actualización: 7 de mayo de 2026
+      </p>
+    </header>
+    <hr class="mt-12 border-t border-carbon/15" />
+
+    <div class="pt-10 pb-8 sm:pb-12">
+      <h2 class={proseH2}>Información que recolectamos</h2>
+      <p class={proseP}>
+        En Argentina al Día respetamos la privacidad de nuestros usuarios. La
+        información personal recopilada, como nombre, correo electrónico o
+        datos de navegación, se utiliza únicamente para mejorar la experiencia
+        del usuario, enviar información relevante y optimizar nuestros
+        servicios. No compartimos datos personales con terceros sin
+        consentimiento, salvo obligación legal.
+      </p>
+
+      <h2 class={proseH2}>Tus derechos</h2>
+      <p class={proseP}>
+        Conforme a la Ley 25.326 de Protección de Datos Personales de la
+        República Argentina, tenés derecho a acceder, rectificar, suprimir o
+        solicitar la portabilidad de tus datos personales en cualquier
+        momento. La autoridad de aplicación es la Agencia de Acceso a la
+        Información Pública (AAIP).
+      </p>
+
+      <h2 class={proseH2}>Cómo ejercer tus derechos</h2>
+      <p class={proseP}>
+        Para ejercer cualquiera de estos derechos, escribinos a
+        <a
+          href="mailto:contacto@argentinaaldia.com"
+          class="text-celeste-dark underline-offset-2 hover:underline"
+        >
+          contacto@argentinaaldia.com
+        </a> con el asunto "Solicitud de derechos de datos personales". Te
+        respondemos en un plazo máximo de 10 días hábiles.
+      </p>
+
+      <h2 class={proseH2}>Cambios en esta política</h2>
+      <p class={proseP}>
+        Podemos actualizar esta política periódicamente. Te recomendamos
+        revisarla cada cierto tiempo. La fecha al inicio del documento indica
+        cuándo fue la última modificación.
+      </p>
+    </div>
+  </main>
+</SiteShell>

@@ -1,0 +1,82 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import HeaderBanner from '../components/HeaderBanner.astro';
+import Ticker from '../components/Ticker.astro';
+import SectionRail from '../components/SectionRail.astro';
+import Footer from '../components/Footer.astro';
+import type { CategorySlug, TickerItem } from '../types';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string | URL;
+  prevUrl?: string | URL;
+  nextUrl?: string | URL;
+  noindex?: boolean;
+
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article';
+
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    authorName?: string;
+    section?: string;
+    tags?: string[];
+  };
+
+  jsonLd?: object | object[];
+
+  activeSection?: CategorySlug;
+  tickerItems?: TickerItem[];
+}
+
+const {
+  title,
+  description,
+  canonical,
+  prevUrl,
+  nextUrl,
+  noindex,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  ogImageAlt,
+  ogType,
+  article,
+  jsonLd,
+  activeSection,
+  tickerItems,
+} = Astro.props;
+
+const fechaHoy = new Date('2026-05-06T08:00:00-03:00');
+const numeroEdicion = 4287;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  prevUrl={prevUrl}
+  nextUrl={nextUrl}
+  noindex={noindex}
+  ogTitle={ogTitle}
+  ogDescription={ogDescription}
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
+  ogType={ogType}
+  article={article}
+  jsonLd={jsonLd}
+>
+  <div class="sticky top-0 z-40">
+    <HeaderBanner fecha={fechaHoy} numeroEdicion={numeroEdicion} />
+    {tickerItems && tickerItems.length > 0 && <Ticker items={tickerItems} />}
+    <SectionRail activeSection={activeSection} />
+  </div>
+  <slot name="below-header" />
+  <slot />
+  <Footer />
+</BaseLayout>

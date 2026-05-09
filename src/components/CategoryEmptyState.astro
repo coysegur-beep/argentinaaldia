@@ -1,0 +1,46 @@
+---
+import type { Article, Category } from '../types';
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+  categoria: Category;
+  suggestions: Article[];
+}
+
+const { categoria, suggestions } = Astro.props;
+---
+
+<section class="bg-bone">
+  <div
+    class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 text-center sm:py-20"
+  >
+    <h2 class="font-serif text-2xl leading-snug text-ink sm:text-3xl">
+      Sin notas nuevas en {categoria.nombre} por ahora
+    </h2>
+    <p class="mx-auto mt-4 max-w-xl font-sans text-base leading-relaxed text-carbon">
+      Estamos trabajando en esta sección. Mientras tanto, leé lo último en
+      otras secciones del diario.
+    </p>
+    <a
+      href="/"
+      class="mt-6 inline-block font-sans text-sm font-medium text-celeste-dark underline underline-offset-4 transition-colors hover:text-ink"
+    >
+      Volver a la portada
+    </a>
+  </div>
+
+  {
+    suggestions.length > 0 && (
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20">
+        <h3 class="mb-6 text-center font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-celeste-dark">
+          Lo último de Argentina al día
+        </h3>
+        <div class="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
+          {suggestions.map((a) => (
+            <ArticleCard article={a} variant="default" />
+          ))}
+        </div>
+      </div>
+    )
+  }
+</section>

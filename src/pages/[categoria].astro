@@ -1,0 +1,269 @@
+---
+import type { GetStaticPaths } from 'astro';
+import SiteShell from '../layouts/SiteShell.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import Pagination from '../components/Pagination.astro';
+import SanityImage from '../components/SanityImage.astro';
+import { categories, getArticlesByCategory } from '../data/content';
+import { formatDate, formatRelative } from '../lib/format';
+import { absoluteUrl } from '../lib/seo';
+
+export const getStaticPaths = (() => {
+  const PAGE_SIZE = 20;
+  return categories.map((c) => {
+    const all = getArticlesByCategory(c.slug);
+    return {
+      params: { categoria: c.slug },
+      props: {
+        categoria: c,
+        articles: all.slice(0, PAGE_SIZE),
+        totalCount: all.length,
+        totalPages: Math.max(1, Math.ceil(all.length / PAGE_SIZE)),
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { categoria, articles, totalCount, totalPages } = Astro.props;
+const currentPage = 1;
+const isEmpty = totalCount === 0;
+const nextUrl = totalPages > 1 ? `/${categoria.slug}/p/2` : undefined;
+
+const cover = articles[0];
+const sidebarItems = articles.slice(1, 5);
+const restItems = articles.slice(5);
+
+const siteOrigin = Astro.site ?? new URL('/', Astro.url);
+const canonicalUrl = absoluteUrl(`/${categoria.slug}`, siteOrigin);
+
+const description =
+  categoria.descripcion ??
+  `Las últimas noticias de ${categoria.nombre} en Argentina al día`;
+
+const collectionSchema = !isEmpty
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      '@id': canonicalUrl,
+      name: `${categoria.nombre} — Argentina al día`,
+      description,
+      url: canonicalUrl,
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'Argentina al día',
+        url: siteOrigin.toString(),
+      },
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: Math.min(totalCount, 10),
+        itemListElement: articles.slice(0, 10).map((a, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: absoluteUrl(`/${a.categoria.slug}/${a.slug}`, siteOrigin),
+          name: a.titulo,
+        })),
+      },
+    }
+  : undefined;
+
+function fechaCorta(iso: string): string {
+  return formatDate(iso, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+}
+---
+
+<SiteShell
+  title={`${categoria.nombre} - Argentina al día`}
+  description={description}
+  canonical={canonicalUrl}
+  activeSection={categoria.slug}
+  nextUrl={nextUrl}
+  ogType="website"
+  ogTitle={categoria.nombre}
+  ogDescription={description}
+  ogImage={cover?.imagenPrincipal.src}
+  ogImageAlt={cover?.imagenPrincipal.alt}
+  jsonLd={collectionSchema}
+>
+  {/* ZONA 1: Header de categoría */}
+  <section class="bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+      <h1
+        class="inline-block px-4 py-2 font-sans text-[13px] font-semibold uppercase tracking-wider text-white sm:text-[14px]"
+        style={`background-color: ${categoria.colorAccent}`}
+      >
+        {categoria.nombre}
+      </h1>
+      <div
+        class="mt-2 h-[3px] w-20"
+        style={`background-color: ${categoria.colorAccent}`}
+        aria-hidden="true"
+      >
+      </div>
+      {
+        categoria.descripcion && (
+          <p class="mt-6 max-w-2xl font-sans text-[16px] leading-relaxed text-carbon sm:mt-8 sm:text-[17px]">
+            {categoria.descripcion}
+          </p>
+        )
+      }
+      <p class="mt-3 font-sans text-[13px] uppercase tracking-wider text-carbon/70">
+        {totalCount} {totalCount === 1 ? 'nota' : 'notas'}
+        {totalPages > 1 && ` · Página ${currentPage} de ${totalPages}`}
+      </p>
+    </div>
+  </section>
+
+  {
+    isEmpty ? (
+      /* ZONA 4: Empty state */
+      <section class="border-t border-carbon/10">
+        <div class="mx-auto max-w-md px-4 sm:px-6 lg:px-8 py-24 text-center">
+          <p
+            class="font-sans text-[12px] font-medium uppercase tracking-widest"
+            style={`color: ${categoria.colorAccent}`}
+          >
+            Próximamente
+          </p>
+          <h2 class="mt-3 font-serif text-[28px] font-normal leading-tight text-ink sm:text-[32px]">
+            Esta sección está en desarrollo
+          </h2>
+          <p class="mt-4 font-sans text-base leading-relaxed text-carbon sm:text-[17px]">
+            Pronto vas a encontrar acá las últimas noticias de {categoria.nombre}.
+          </p>
+          <a
+            href="/"
+            class="mt-6 inline-block font-sans text-sm font-medium text-celeste-dark transition-colors hover:underline"
+          >
+            Ver otras secciones →
+          </a>
+        </div>
+      </section>
+    ) : (
+      <>
+        {/* ZONA 2: Cover + Sidebar */}
+        <section class="border-t border-carbon/10">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-x-12">
+              <article
+                class={
+                  sidebarItems.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'
+                }
+              >
+                <a
+                  href={`/${cover.categoria.slug}/${cover.slug}`}
+                  style={`--accent: ${cover.categoria.colorAccent}`}
+                  class="group block"
+                >
+                  <div class="relative overflow-hidden">
+                    <SanityImage
+                      image={cover.imagenPrincipal}
+                      sizes="(max-width: 1024px) 100vw, 67vw"
+                      loading="eager"
+                      fetchpriority="high"
+                      aspectRatio={16 / 9}
+                      class="block h-auto w-full transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <span
+                      class="absolute bottom-4 left-4 inline-block px-3 py-1 font-sans text-[11px] font-medium uppercase tracking-wider text-white"
+                      style={`background-color: ${cover.categoria.colorAccent}`}
+                    >
+                      {cover.categoria.nombre}
+                    </span>
+                  </div>
+                  <h2 class="mt-6 font-serif text-[24px] font-medium leading-[1.2] text-ink transition-colors duration-150 group-hover:text-[var(--accent)] sm:text-[32px] lg:text-[40px]">
+                    {cover.titulo}
+                  </h2>
+                  <p class="mt-3 line-clamp-3 font-sans text-base leading-[1.6] text-carbon sm:text-[17px] lg:text-[18px]">
+                    {cover.copete}
+                  </p>
+                  <p class="mt-4 font-sans text-[12px] font-medium uppercase tracking-wider text-carbon/70">
+                    Por {cover.autor.nombre} · {formatRelative(cover.fechaPublicacion)}
+                  </p>
+                </a>
+              </article>
+
+              {sidebarItems.length > 0 && (
+                <aside class="bg-bone p-6 lg:col-span-1">
+                  <p
+                    class="font-sans text-[11px] font-medium uppercase tracking-widest"
+                    style={`color: ${categoria.colorAccent}`}
+                  >
+                    Últimas de {categoria.nombre}
+                  </p>
+                  <div
+                    class="mb-4 mt-2 h-[2px] w-12"
+                    style={`background-color: ${categoria.colorAccent}`}
+                    aria-hidden="true"
+                  />
+                  <ul>
+                    {sidebarItems.map((a) => (
+                      <li class="border-b border-carbon/15 last:border-b-0">
+                        <a
+                          href={`/${a.categoria.slug}/${a.slug}`}
+                          style={`--accent: ${categoria.colorAccent}`}
+                          class="group flex items-start gap-3 py-3"
+                        >
+                          <div class="aspect-square w-20 shrink-0 overflow-hidden">
+                            <SanityImage
+                              image={a.imagenPrincipal}
+                              sizes="80px"
+                              widths={[80, 160, 240]}
+                              aspectRatio={1}
+                              class="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div class="min-w-0 flex-1">
+                            <h3 class="line-clamp-3 font-serif text-[14px] font-medium leading-[1.3] text-ink transition-colors duration-150 group-hover:text-[var(--accent)] sm:text-[15px]">
+                              {a.titulo}
+                            </h3>
+                            <time
+                              datetime={a.fechaPublicacion}
+                              class="mt-1 block font-sans text-[11px] text-carbon/60"
+                            >
+                              {fechaCorta(a.fechaPublicacion)}
+                            </time>
+                          </div>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ZONA 3: Grid de notas restantes */}
+        {restItems.length > 0 && (
+          <section class="border-t border-carbon/10">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+              <p
+                class="mb-8 font-sans text-[11px] font-medium uppercase tracking-widest"
+                style={`color: ${categoria.colorAccent}`}
+              >
+                Más notas de {categoria.nombre}
+              </p>
+              <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+                {restItems.map((a) => (
+                  <ArticleCard article={a} variant="default" />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            basePath={`/${categoria.slug}`}
+          />
+        )}
+      </>
+    )
+  }
+</SiteShell>

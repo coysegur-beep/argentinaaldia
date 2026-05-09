@@ -1,0 +1,84 @@
+---
+import type { ArticleImage } from '~/types';
+import { buildImageUrl, buildSrcSet } from '~/lib/image';
+
+interface Props {
+  image: ArticleImage;
+  /** sizes attribute. Default `100vw` — pasalo cuando el slot tiene un
+   *  ancho conocido y no es full-bleed (ej. cards en grilla). */
+  sizes?: string;
+  /** Widths del srcset. Default cubre desde mobile a retina desktop. */
+  widths?: number[];
+  /** `eager` solo above-the-fold. Default `lazy`. */
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  /** Si se pasa, croppea con ese ratio (w/h) y respeta hotspot.
+   *  Si no, usa el ratio natural de image.width/image.height. */
+  aspectRatio?: number;
+  class?: string;
+}
+
+const {
+  image,
+  sizes = '100vw',
+  widths = [320, 480, 640, 768, 1024, 1280, 1600, 1920],
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  aspectRatio,
+  class: className = '',
+} = Astro.props;
+
+// Ratio: prop > natural (de metadata) > 16:9 fallback. Necesitamos uno sí o sí
+// para emitir width/height en el <img> y reservar la caja antes del bitmap.
+const naturalRatio =
+  image.width && image.height ? image.width / image.height : null;
+const ratio = aspectRatio ?? naturalRatio ?? 16 / 9;
+
+// 1200 es el ancho del bitmap "principal" (el src). El srcset cubre el resto
+// de breakpoints y el browser elige según viewport y DPR.
+const renderWidth = 1200;
+const renderHeight = Math.round(renderWidth / ratio);
+
+// fit=crop solo cuando forzamos ratio (para que el hotspot tenga efecto).
+// Sin ratio explícito, fit=max preserva el ratio natural del original.
+const fit = aspectRatio != null ? 'crop' : 'max';
+
+const src = buildImageUrl(image, {
+  w: renderWidth,
+  h: aspectRatio != null ? renderHeight : undefined,
+  q: 75,
+  fit,
+});
+const srcset = buildSrcSet(image, widths, aspectRatio);
+
+// LQIP de fondo: blur placeholder que el browser pinta antes de bajar el
+// bitmap. Una vez que el <img> carga, tapa el background. Sin LQIP, no
+// agregamos style — el slot queda transparente hasta que llega el src.
+const lqipStyle = image?.lqip
+  ? `background-image:url('${image.lqip}');background-size:cover;background-position:center;`
+  : undefined;
+
+// Guard final: si no hay src, no emitimos <img>. El componente no decide
+// un placeholder visual — eso es responsabilidad del caller que sí conoce
+// su contexto (puede preferir bg neutro, ícono, fallback, etc.). Ver hotfix
+// en image.ts y entry pendiente en TECH_DEBT.md sobre tipar `src: string | null`.
+const hasSrc = Boolean(image?.src);
+---
+
+{
+  hasSrc && (
+    <img
+      src={src}
+      srcset={srcset}
+      sizes={sizes}
+      width={renderWidth}
+      height={renderHeight}
+      alt={image.alt}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchpriority}
+      class={className}
+      style={lqipStyle}
+    />
+  )
+}

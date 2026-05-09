@@ -1,0 +1,73 @@
+---
+import SiteShell from '../layouts/SiteShell.astro';
+
+const title = 'Correcciones - Argentina al día';
+const description =
+  'Política de correcciones de Argentina al día. Cómo reportar errores y cómo se publican las correcciones de manera transparente.';
+
+const proseP =
+  'font-serif text-[16px] leading-[1.7] text-carbon sm:text-[17px] lg:text-[18px]';
+const proseH2 =
+  'mt-8 mb-3 font-serif text-[22px] font-medium leading-snug text-ink sm:text-[24px] lg:text-[26px]';
+---
+
+<SiteShell title={title} description={description} canonical="/correcciones">
+  <main class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
+    <header class="text-center">
+      <p class="font-sans text-[12px] font-medium uppercase tracking-widest text-celeste-dark sm:text-[13px]">
+        Editorial
+      </p>
+      <div
+        class="mx-auto my-4 h-[2px] w-16 bg-celeste-dark sm:w-20"
+        aria-hidden="true"
+      >
+      </div>
+      <h1
+        class="font-serif text-[36px] font-medium leading-[1.1] tracking-tight text-ink sm:text-[48px] lg:text-[60px]"
+      >
+        Correcciones
+      </h1>
+      <p class="mt-6 font-sans text-[13px] uppercase tracking-wider text-carbon/70">
+        Última actualización: 7 de mayo de 2026
+      </p>
+    </header>
+    <hr class="mt-12 border-t border-carbon/15" />
+
+    <div class="pt-10 pb-8 sm:pb-12">
+      <h2 class={proseH2}>Nuestro compromiso</h2>
+      <p class={proseP}>
+        En caso de detectar errores en nuestras publicaciones, Argentina al
+        Día se compromete a corregirlos de manera transparente y en el menor
+        tiempo posible.
+      </p>
+
+      <h2 class={proseH2}>Cómo se publican las correcciones</h2>
+      <p class={proseP}>
+        Cuando una nota es modificada después de su publicación, la
+        corrección se indica al pie del artículo con la fecha de la
+        actualización. La versión original no se borra: se mantiene el rastro
+        del cambio.
+      </p>
+
+      <h2 class={proseH2}>Cómo reportar un error</h2>
+      <p class={proseP}>
+        Los usuarios pueden reportar imprecisiones o información incorrecta
+        escribiendo a
+        <a
+          href="mailto:correcciones@argentinaaldia.com"
+          class="text-celeste-dark underline-offset-2 hover:underline"
+        >
+          correcciones@argentinaaldia.com
+        </a>. Incluí en el mensaje:
+      </p>
+      <ul class="mt-4 list-disc space-y-2 pl-6 font-serif text-[16px] leading-[1.7] text-carbon sm:text-[17px] lg:text-[18px]">
+        <li>El link de la nota.</li>
+        <li>Qué información considerás incorrecta.</li>
+        <li>Si tenés fuente o evidencia, sumala.</li>
+      </ul>
+      <p class={`mt-5 sm:mt-6 ${proseP}`}>
+        Respondemos en un plazo máximo de 48 horas hábiles.
+      </p>
+    </div>
+  </main>
+</SiteShell>

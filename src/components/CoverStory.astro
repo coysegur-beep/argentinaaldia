@@ -1,0 +1,66 @@
+---
+import type { Article } from '../types';
+import { formatRelative } from '../lib/format';
+import SanityImage from './SanityImage.astro';
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const href = `/${article.categoria.slug}/${article.slug}`;
+---
+
+<section class="relative w-full bg-ink">
+  <a href={href} class="group block no-underline">
+    <div class="relative h-[360px] overflow-hidden sm:h-[480px] lg:h-[560px]">
+      <SanityImage
+        image={article.imagenPrincipal}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        aspectRatio={16 / 9}
+        class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.015]"
+      />
+
+      <div
+        class="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-ink/85 via-ink/40 to-transparent"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="absolute inset-x-0 top-0">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
+          <span
+            class="inline-block px-3 py-1.5 font-sans text-[11px] font-bold uppercase tracking-widest text-white sm:text-[12px]"
+            style={`background-color: ${article.categoria.colorAccent}`}
+          >
+            {article.categoria.nombre}
+          </span>
+        </div>
+      </div>
+
+      <div class="absolute inset-x-0 bottom-0">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8 sm:pb-10 lg:pb-14">
+          <div class="max-w-3xl">
+            <h1
+              class="font-serif text-[32px] font-medium leading-[1.1] text-white decoration-celeste decoration-2 underline-offset-[6px] group-hover:underline sm:text-[44px] lg:text-[56px]"
+            >
+              {article.titulo}
+            </h1>
+            <p
+              class="mt-4 font-sans text-base leading-relaxed text-white/90 sm:text-lg lg:text-xl"
+            >
+              {article.copete}
+            </p>
+            <p
+              class="mt-6 font-sans text-[11px] font-medium uppercase tracking-wider text-white/70 sm:text-[12px]"
+            >
+              Por {article.autor.nombre} · {formatRelative(article.fechaPublicacion)}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</section>

@@ -1,0 +1,129 @@
+---
+import type { GetStaticPaths } from 'astro';
+import SiteShell from '../../layouts/SiteShell.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import PortableTextRenderer from '../../components/PortableTextRenderer.astro';
+import SanityImage from '../../components/SanityImage.astro';
+import { authors, getArticlesByAuthor } from '../../data/content';
+
+export const getStaticPaths = (() => {
+  return authors.map((a) => ({
+    params: { slug: a.slug },
+    props: { autor: a, articulos: getArticlesByAuthor(a.slug) },
+  }));
+}) satisfies GetStaticPaths;
+
+const { autor, articulos } = Astro.props;
+const primerNombre = autor.nombre.split(' ')[0];
+---
+
+<SiteShell
+  title={`${autor.nombre} — Argentina al día`}
+  description={`Notas de ${autor.nombre}, ${autor.cargo} en Argentina al día.`}
+>
+  <header class="border-b border-ink/10 bg-bone">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <p
+        class="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-celeste-dark"
+      >
+        Autor
+      </p>
+      <div class="mt-4 flex items-start gap-5">
+        <SanityImage
+          image={{
+            src: autor.foto,
+            alt: `Foto de ${autor.nombre}`,
+          }}
+          sizes="(max-width: 640px) 80px, 96px"
+          widths={[80, 96, 160, 192]}
+          aspectRatio={1}
+          class="h-20 w-20 rounded-full object-cover sm:h-24 sm:w-24"
+        />
+        <div>
+          <h1
+            class="font-serif text-3xl leading-tight tracking-tight text-ink sm:text-4xl"
+          >
+            {autor.nombre}
+          </h1>
+          <p
+            class="mt-1 font-sans text-sm uppercase tracking-widest text-carbon/70"
+          >
+            {autor.cargo}
+          </p>
+          {
+            autor.redesSociales && (
+              <ul class="mt-3 flex items-center gap-3 font-sans text-xs">
+                {autor.redesSociales.twitter && (
+                  <li>
+                    <a
+                      href={`https://twitter.com/${autor.redesSociales.twitter}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-celeste-dark transition-colors hover:text-ink"
+                    >
+                      X / Twitter
+                    </a>
+                  </li>
+                )}
+                {autor.redesSociales.instagram && (
+                  <li>
+                    <a
+                      href={`https://instagram.com/${autor.redesSociales.instagram}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-celeste-dark transition-colors hover:text-ink"
+                    >
+                      Instagram
+                    </a>
+                  </li>
+                )}
+                {autor.redesSociales.linkedin && (
+                  <li>
+                    <a
+                      href={`https://linkedin.com/in/${autor.redesSociales.linkedin}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-celeste-dark transition-colors hover:text-ink"
+                    >
+                      LinkedIn
+                    </a>
+                  </li>
+                )}
+              </ul>
+            )
+          }
+        </div>
+      </div>
+      {
+        autor.bio && (
+          <div class="mt-6 max-w-2xl font-serif text-base leading-relaxed text-carbon">
+            {typeof autor.bio === 'string' ? (
+              <p>{autor.bio}</p>
+            ) : (
+              <PortableTextRenderer blocks={autor.bio} />
+            )}
+          </div>
+        )
+      }
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+    <h2 class="mb-6 font-serif text-2xl text-ink">
+      Notas de {primerNombre}
+    </h2>
+    {
+      articulos.length > 0 ? (
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+          {articulos.map((a) => (
+            <ArticleCard article={a} variant="default" />
+          ))}
+        </div>
+      ) : (
+        <p class="font-sans text-base text-carbon">
+          Todavía no hay notas publicadas por {primerNombre}.
+        </p>
+      )
+    }
+  </main>
+</SiteShell>

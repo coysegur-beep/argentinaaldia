@@ -1,0 +1,108 @@
+---
+import SiteShell from '../layouts/SiteShell.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import {
+  categories,
+  getMostRead,
+  getArticlesByCategory,
+} from '../data/content';
+
+const recientes = getMostRead(5);
+const seccionesActivas = categories
+  .map((c) => ({ ...c, count: getArticlesByCategory(c.slug).length }))
+  .filter((c) => c.count > 0)
+  .sort((a, b) => b.count - a.count)
+  .slice(0, 4);
+---
+
+<SiteShell
+  title="Esta nota se mudó o nunca existió — Argentina al día"
+  description="No encontramos lo que buscabas. Probá con el buscador o seguí por las secciones más activas."
+  noindex={true}
+>
+  <section class="border-b border-ink/10 bg-bone">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+      <p
+        class="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-celeste-dark"
+      >
+        Error 404
+      </p>
+      <h1
+        class="mt-3 font-serif text-4xl leading-tight tracking-tight text-ink sm:text-5xl"
+      >
+        Esta nota se mudó o nunca existió.
+      </h1>
+      <p
+        class="mt-5 max-w-xl font-serif text-lg leading-relaxed text-carbon"
+      >
+        El link que seguiste no apunta a una página de Argentina al día. Probá
+        buscando lo que estabas leyendo, o seguí por las secciones más activas
+        de hoy.
+      </p>
+      <form method="get" action="/buscar" class="mt-6 flex flex-col gap-3 sm:flex-row">
+        <label for="q-404" class="sr-only">Buscar</label>
+        <input
+          id="q-404"
+          name="q"
+          type="search"
+          placeholder="Buscar por título, copete o etiqueta…"
+          class="flex-1 border border-ink/15 bg-white px-4 py-3 font-sans text-base text-ink placeholder:text-carbon/50 focus:border-celeste-dark focus:outline-none"
+        />
+        <button
+          type="submit"
+          class="bg-ink px-5 py-3 font-sans text-sm font-medium text-white transition-colors hover:bg-celeste-dark"
+        >
+          Buscar
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <section class="border-b border-ink/10">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <h2
+        class="mb-6 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-celeste-dark"
+      >
+        Las 5 más recientes
+      </h2>
+      <ul class="space-y-5">
+        {
+          recientes.map((a) => (
+            <li class="border-b border-ink/10 pb-5 last:border-0">
+              <ArticleCard article={a} variant="compact" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <h2
+        class="mb-6 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-celeste-dark"
+      >
+        Secciones activas
+      </h2>
+      <ul class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {
+          seccionesActivas.map((c) => (
+            <li>
+              <a
+                href={`/${c.slug}`}
+                class="group block border border-ink/10 bg-white p-4 transition-colors hover:border-celeste-dark"
+              >
+                <p class="font-serif text-xl text-ink transition-colors group-hover:text-celeste-dark">
+                  {c.nombre}
+                </p>
+                <p class="mt-1 font-sans text-xs text-carbon/70">
+                  {c.count} {c.count === 1 ? 'nota' : 'notas'}
+                </p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</SiteShell>

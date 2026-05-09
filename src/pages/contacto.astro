@@ -1,0 +1,153 @@
+---
+import SiteShell from '../layouts/SiteShell.astro';
+
+// TODO: actualizar handles y URLs cuando estén las cuentas reales creadas
+const redes = [
+  {
+    label: 'Twitter / X',
+    handle: '@argentinaaldia',
+    url: 'https://twitter.com/argentinaaldia',
+    icon: 'x' as const,
+  },
+  {
+    label: 'Instagram',
+    handle: '@argentinaaldia',
+    url: 'https://instagram.com/argentinaaldia',
+    icon: 'instagram' as const,
+  },
+  {
+    label: 'Facebook',
+    handle: 'facebook.com/argentinaaldia',
+    url: 'https://facebook.com/argentinaaldia',
+    icon: 'facebook' as const,
+  },
+  {
+    label: 'YouTube',
+    handle: '@argentinaaldia',
+    url: 'https://youtube.com/@argentinaaldia',
+    icon: 'youtube' as const,
+  },
+  {
+    label: 'Email',
+    handle: 'contacto@argentinaaldia.com',
+    url: 'mailto:contacto@argentinaaldia.com',
+    icon: 'email' as const,
+  },
+];
+
+const title = 'Contacto — Argentina al día';
+const description =
+  'Seguinos en Twitter, Instagram, Facebook, YouTube. Escribinos a contacto@argentinaaldia.com.';
+---
+
+<SiteShell title={title} description={description} canonical="/contacto">
+  <main class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
+    <header class="text-center">
+      <p
+        class="font-sans text-[12px] font-medium uppercase tracking-widest text-celeste-dark sm:text-[13px]"
+      >
+        Institucional
+      </p>
+      <div
+        class="mx-auto my-4 h-[2px] w-16 bg-celeste-dark sm:w-20"
+        aria-hidden="true"
+      >
+      </div>
+      <h1
+        class="font-serif text-[36px] font-medium leading-[1.1] tracking-tight text-ink sm:text-[48px] lg:text-[60px]"
+      >
+        Contacto
+      </h1>
+      <p class="mt-6 font-sans text-[13px] uppercase tracking-wider text-carbon/70">
+        Seguinos en nuestras redes sociales
+      </p>
+    </header>
+    <hr class="mt-12 border-t border-carbon/15" />
+
+    <div class="grid grid-cols-1 gap-6 pt-10 pb-8 sm:grid-cols-2 sm:pb-12">
+      {
+        redes.map((r) => {
+          const isMailto = r.url.startsWith('mailto:');
+          return (
+            <a
+              href={r.url}
+              target={isMailto ? undefined : '_blank'}
+              rel={isMailto ? undefined : 'noopener noreferrer'}
+              class="flex items-center gap-4 rounded-lg border border-carbon/15 p-5 transition-colors duration-150 hover:border-celeste"
+            >
+              <span class="shrink-0 text-ink">
+                {r.icon === 'x' && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                )}
+                {r.icon === 'instagram' && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    class="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                  </svg>
+                )}
+                {r.icon === 'facebook' && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.66 9.18 8.45 9.94v-7.03H7.9v-2.91h2.55v-2.21c0-2.52 1.5-3.91 3.79-3.91 1.1 0 2.25.2 2.25.2v2.47h-1.27c-1.25 0-1.64.78-1.64 1.57v1.88h2.79l-.45 2.91h-2.34V22c4.78-.76 8.45-4.92 8.45-9.94z" />
+                  </svg>
+                )}
+                {r.icon === 'youtube' && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                )}
+                {r.icon === 'email' && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-.9.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                )}
+              </span>
+              <div class="min-w-0">
+                <p class="font-sans text-[15px] font-medium text-ink sm:text-[16px]">
+                  {r.label}
+                </p>
+                <p class="truncate font-sans text-[13px] text-carbon sm:text-[14px]">
+                  {r.handle}
+                </p>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
+  </main>
+</SiteShell>

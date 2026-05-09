@@ -1,0 +1,73 @@
+---
+import { categories } from '../data/content';
+import type { CategorySlug } from '../types';
+
+interface Props {
+  activeSection?: CategorySlug;
+}
+
+const { activeSection } = Astro.props;
+const seccionesLinks = categories.slice().sort((a, b) => a.orden - b.orden);
+
+// "Inicio" se considera activo solo cuando el path actual es "/" exactamente.
+// Otras páginas sin activeSection (/buscar, /autor, /404) no marcan Inicio
+// como activo aunque pasen activeSection=undefined.
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+---
+
+<nav
+  aria-label="Secciones principales"
+  class="border-b border-ink/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <ul
+      class="-mx-2 flex items-center gap-x-1 overflow-x-auto whitespace-nowrap font-sans text-[14px] lg:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+    >
+      <li class="shrink-0">
+        <a
+          href="/"
+          class={`relative block px-3 py-3 font-medium transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-celeste ${
+            isHome
+              ? 'text-celeste-dark'
+              : 'text-ink/70 hover:text-celeste-dark'
+          }`}
+          aria-current={isHome ? 'page' : undefined}
+        >
+          Inicio
+          {isHome && (
+            <span
+              class="absolute inset-x-3 bottom-0 h-[2px] bg-celeste-dark"
+              aria-hidden="true"
+            />
+          )}
+        </a>
+      </li>
+      {
+        seccionesLinks.map((c) => {
+          const isActive = c.slug === activeSection;
+          return (
+            <li class="shrink-0">
+              <a
+                href={`/${c.slug}`}
+                style={`--accent: ${c.colorAccent}`}
+                class={`relative block px-3 py-3 font-medium transition-colors duration-150 hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-celeste ${
+                  isActive ? 'text-[var(--accent)]' : 'text-ink/70'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {c.nombre}
+                {isActive && (
+                  <span
+                    class="absolute inset-x-3 bottom-0 h-[2px]"
+                    style={`background-color: ${c.colorAccent}`}
+                    aria-hidden="true"
+                  />
+                )}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</nav>

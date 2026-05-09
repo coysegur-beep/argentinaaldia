@@ -1,0 +1,59 @@
+---
+import SiteShell from '../layouts/SiteShell.astro';
+
+const title = 'Código de ética - Argentina al día';
+const description =
+  'Código de ética de Argentina al día. Compromiso con la veracidad, la independencia y la responsabilidad periodística.';
+
+const proseP =
+  'font-serif text-[16px] leading-[1.7] text-carbon sm:text-[17px] lg:text-[18px]';
+---
+
+<SiteShell title={title} description={description} canonical="/etica">
+  <main class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
+    <header class="text-center">
+      <p class="font-sans text-[12px] font-medium uppercase tracking-widest text-celeste-dark sm:text-[13px]">
+        Editorial
+      </p>
+      <div
+        class="mx-auto my-4 h-[2px] w-16 bg-celeste-dark sm:w-20"
+        aria-hidden="true"
+      >
+      </div>
+      <h1
+        class="font-serif text-[36px] font-medium leading-[1.1] tracking-tight text-ink sm:text-[48px] lg:text-[60px]"
+      >
+        Código de ética
+      </h1>
+      <p class="mt-6 font-sans text-[13px] uppercase tracking-wider text-carbon/70">
+        Última actualización: 7 de mayo de 2026
+      </p>
+    </header>
+    <hr class="mt-12 border-t border-carbon/15" />
+
+    <div class="pt-10 pb-8 sm:pb-12">
+      <p class={proseP}>
+        Argentina al Día mantiene un compromiso con la veracidad, la
+        independencia y la responsabilidad periodística. Nuestro contenido se
+        basa en fuentes confiables y verificadas, promoviendo el respeto, la
+        transparencia y la pluralidad de opiniones. Rechazamos la difusión de
+        información falsa, discriminatoria o manipulada.
+      </p>
+      <p class={`mt-5 sm:mt-6 ${proseP}`}>
+        Cuando una nota requiere corrección, lo hacemos en forma transparente,
+        manteniendo visible la versión modificada y la indicación de la
+        corrección al pie del artículo.
+      </p>
+      <p class={`mt-5 sm:mt-6 ${proseP}`}>
+        Para más detalles sobre nuestra política de correcciones, ver la
+        página de
+        <a
+          href="/correcciones"
+          class="text-celeste-dark underline-offset-2 hover:underline"
+        >
+          Correcciones
+        </a>.
+      </p>
+    </div>
+  </main>
+</SiteShell>

@@ -1,0 +1,63 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath: string;
+  prevLabel?: string;
+  nextLabel?: string;
+}
+
+const {
+  currentPage,
+  totalPages,
+  basePath,
+  prevLabel = 'Anterior',
+  nextLabel = 'Siguiente',
+} = Astro.props;
+
+function pageUrl(n: number): string {
+  if (n <= 1) return basePath;
+  return `${basePath}/p/${n}`;
+}
+
+const prevHref = currentPage > 1 ? pageUrl(currentPage - 1) : null;
+const nextHref = currentPage < totalPages ? pageUrl(currentPage + 1) : null;
+---
+
+<nav aria-label="Paginación" class="border-t border-ink/10">
+  <div class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 py-8">
+    {
+      prevHref ? (
+        <a
+          href={prevHref}
+          rel="prev"
+          class="font-sans text-sm font-medium text-ink transition-colors hover:text-celeste-dark"
+        >
+          ← {prevLabel}
+        </a>
+      ) : (
+        <span class="font-sans text-sm text-carbon/40" aria-disabled="true">
+          ← {prevLabel}
+        </span>
+      )
+    }
+    <span class="font-sans text-[11px] uppercase tracking-widest text-carbon/60">
+      Página {currentPage} de {totalPages}
+    </span>
+    {
+      nextHref ? (
+        <a
+          href={nextHref}
+          rel="next"
+          class="font-sans text-sm font-medium text-ink transition-colors hover:text-celeste-dark"
+        >
+          {nextLabel} →
+        </a>
+      ) : (
+        <span class="font-sans text-sm text-carbon/40" aria-disabled="true">
+          {nextLabel} →
+        </span>
+      )
+    }
+  </div>
+</nav>

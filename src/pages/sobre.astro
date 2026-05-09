@@ -1,0 +1,53 @@
+---
+import SiteShell from '../layouts/SiteShell.astro';
+
+const title = 'Sobre Argentina al día';
+const description =
+  'Argentina al día es un portal digital de noticias dedicado a informar de manera rápida, clara y confiable sobre los acontecimientos más importantes de Argentina y el mundo.';
+
+const proseP =
+  'font-serif text-[16px] leading-[1.7] text-carbon sm:text-[17px] lg:text-[18px]';
+---
+
+<SiteShell title={title} description={description} canonical="/sobre">
+  <main class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24">
+    <header class="text-center">
+      <p class="font-sans text-[12px] font-medium uppercase tracking-widest text-celeste-dark sm:text-[13px]">
+        Institucional
+      </p>
+      <div
+        class="mx-auto my-4 h-[2px] w-16 bg-celeste-dark sm:w-20"
+        aria-hidden="true"
+      >
+      </div>
+      <h1
+        class="font-serif text-[36px] font-medium leading-[1.1] tracking-tight text-ink sm:text-[48px] lg:text-[60px]"
+      >
+        Sobre Argentina al día
+      </h1>
+      <p class="mt-6 font-sans text-[13px] uppercase tracking-wider text-carbon/70">
+        Portal digital de noticias
+      </p>
+    </header>
+    <hr class="mt-12 border-t border-carbon/15" />
+
+    <div class="pt-10 pb-8 sm:pb-12">
+      <p class={proseP}>
+        Argentina al Día es un portal digital de noticias y actualidad
+        dedicado a informar de manera rápida, clara y confiable sobre los
+        acontecimientos más importantes de Argentina y el mundo. Nuestra
+        cobertura incluye política, economía, sociedad, deportes, cultura y
+        tendencias, ofreciendo contenido actualizado en tiempo real para
+        mantener a los lectores siempre informados.
+      </p>
+      <p class={`mt-5 sm:mt-6 ${proseP}`}>
+        Trabajamos con un enfoque moderno y dinámico, priorizando la
+        veracidad, la inmediatez y el análisis de los hechos que impactan a
+        la sociedad. A través de una plataforma ágil y accesible, buscamos
+        convertirnos en una fuente de información confiable para quienes
+        desean seguir el día a día del país con una mirada actual,
+        independiente y cercana a la audiencia.
+      </p>
+    </div>
+  </main>
+</SiteShell>

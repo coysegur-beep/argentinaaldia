@@ -1,0 +1,38 @@
+---
+import type { TickerItem } from '../types';
+
+interface Props {
+  items: TickerItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section
+  aria-label="Indicadores económicos"
+  class="border-b border-carbon/15 bg-bone"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-x-6 overflow-x-auto py-2 font-sans text-xs">
+      {
+        items.map((it) => (
+          <div class="flex shrink-0 items-baseline gap-1.5">
+            <span class="text-[10px] font-medium uppercase tracking-widest text-carbon/70">
+              {it.label}
+            </span>
+            <span class="font-medium tabular-nums text-ink">{it.value}</span>
+            {it.change !== undefined && (
+              <span
+                class={`text-[10px] font-medium tabular-nums ${
+                  it.change >= 0 ? 'text-emerald-700' : 'text-rose-700'
+                }`}
+              >
+                {it.change >= 0 ? '▲' : '▼'} {Math.abs(it.change).toFixed(1)}%
+              </span>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

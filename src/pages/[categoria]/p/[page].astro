@@ -1,0 +1,91 @@
+---
+import type { GetStaticPaths } from 'astro';
+import SiteShell from '../../../layouts/SiteShell.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import Pagination from '../../../components/Pagination.astro';
+import { categories, getArticlesByCategory } from '../../../data/content';
+
+export const getStaticPaths = (({ paginate }) => {
+  const PAGE_SIZE = 20;
+  return categories.flatMap((c) => {
+    const all = getArticlesByCategory(c.slug);
+    if (all.length <= PAGE_SIZE) return [];
+    return paginate(all, {
+      params: { categoria: c.slug },
+      pageSize: PAGE_SIZE,
+    }).filter((p) => Number(p.params.page) > 1);
+  });
+}) satisfies GetStaticPaths;
+
+const { categoria: categoriaSlug } = Astro.params;
+const { page } = Astro.props;
+
+const categoria = categories.find((c) => c.slug === categoriaSlug);
+if (!categoria) throw new Error(`Categoría inválida: ${categoriaSlug}`);
+
+const currentPage = page.currentPage;
+const totalPages = page.lastPage;
+const totalCount = page.total;
+const articles = page.data;
+
+const canonical = `/${categoria.slug}/p/${currentPage}`;
+const prevUrl = currentPage === 2
+  ? `/${categoria.slug}`
+  : `/${categoria.slug}/p/${currentPage - 1}`;
+const nextUrl = currentPage < totalPages
+  ? `/${categoria.slug}/p/${currentPage + 1}`
+  : undefined;
+---
+
+<SiteShell
+  title={`${categoria.nombre} — Página ${currentPage} — Argentina al día`}
+  description={categoria.descripcion ?? `Noticias de ${categoria.nombre} en Argentina al día`}
+  activeSection={categoria.slug}
+  canonical={canonical}
+  prevUrl={prevUrl}
+  nextUrl={nextUrl}
+>
+  <header class="border-b border-ink/10 bg-bone">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <p
+        class="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-celeste-dark"
+      >
+        Sección
+      </p>
+      <h1
+        class="mt-3 font-serif text-4xl leading-none tracking-tight text-ink sm:text-5xl"
+      >
+        {categoria.nombre}
+      </h1>
+      <div
+        class="mt-4 h-[2px] w-16"
+        style={`background-color: ${categoria.colorAccent}`}
+        aria-hidden="true"
+      >
+      </div>
+      {
+        categoria.descripcion && (
+          <p class="mt-5 max-w-2xl font-serif text-lg leading-relaxed text-carbon">
+            {categoria.descripcion}
+          </p>
+        )
+      }
+      <p class="mt-4 font-sans text-xs text-carbon/70">
+        {totalCount} {totalCount === 1 ? 'nota' : 'notas'} · Página {currentPage}
+        de {totalPages}
+      </p>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+      {articles.map((a) => <ArticleCard article={a} variant="default" />)}
+    </div>
+  </main>
+
+  <Pagination
+    currentPage={currentPage}
+    totalPages={totalPages}
+    basePath={`/${categoria.slug}`}
+  />
+</SiteShell>

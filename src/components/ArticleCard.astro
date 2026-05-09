@@ -1,0 +1,103 @@
+---
+import type { Article } from '../types';
+import { formatRelative } from '../lib/format';
+import SanityImage from './SanityImage.astro';
+
+interface Props {
+  article: Article;
+  variant?: 'default' | 'compact' | 'featured';
+  /** `eager` solo en posición lead (la página decide). Default `lazy`. */
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+  article,
+  variant = 'default',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+} = Astro.props;
+const href = `/${article.categoria.slug}/${article.slug}`;
+const isCompact = variant === 'compact';
+const isFeatured = variant === 'featured';
+
+// Card en grilla 3 cols (default): 100vw mobile, 50vw tablet, 33vw desktop.
+// Card featured: hero-like en lo que la página le destine; usamos slot mayor.
+const cardSizes = isFeatured
+  ? '(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px'
+  : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
+const cardWidths = isFeatured
+  ? [320, 480, 640, 768, 1024, 1280, 1600, 1920]
+  : [320, 480, 640, 800];
+---
+
+{
+  isCompact ? (
+    <article>
+      <a href={href} class="group block">
+        <div class="mb-2 flex items-baseline justify-between gap-3">
+          <span
+            class="font-sans text-[10px] font-medium uppercase tracking-[0.18em]"
+            style={`color: ${article.categoria.colorAccent}`}
+          >
+            {article.categoria.nombre}
+          </span>
+          <time
+            datetime={article.fechaPublicacion}
+            class="shrink-0 font-sans text-[10px] uppercase tracking-widest text-carbon/60"
+          >
+            {formatRelative(article.fechaPublicacion)}
+          </time>
+        </div>
+        <h3 class="font-serif text-lg font-medium leading-snug text-ink transition-colors group-hover:text-celeste-dark">
+          {article.titulo}
+        </h3>
+      </a>
+    </article>
+  ) : (
+    <article>
+      <a href={href} class="group block">
+        <div class="relative overflow-hidden">
+          <SanityImage
+            image={article.imagenPrincipal}
+            sizes={cardSizes}
+            widths={cardWidths}
+            loading={loading}
+            fetchpriority={fetchpriority}
+            aspectRatio={isFeatured ? 16 / 9 : 16 / 10}
+            class="block h-auto w-full transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        </div>
+        <div class="mt-3">
+          <div class="mb-1.5">
+            <span
+              class="font-sans text-[10px] font-medium uppercase tracking-[0.18em]"
+              style={`color: ${article.categoria.colorAccent}`}
+            >
+              {article.categoria.nombre}
+            </span>
+          </div>
+          <h3
+            class={`font-serif font-medium leading-snug text-ink transition-colors group-hover:text-celeste-dark ${
+              isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
+            }`}
+          >
+            {article.titulo}
+          </h3>
+          {isFeatured && (
+            <p class="mt-2 font-sans text-base leading-relaxed text-carbon">
+              {article.copete}
+            </p>
+          )}
+          <p class="mt-2 font-sans text-[11px] uppercase tracking-[0.18em] text-carbon/60">
+            {article.autor.nombre}
+            <span class="mx-1.5 text-carbon/30">·</span>
+            {formatRelative(article.fechaPublicacion)}
+            <span class="mx-1.5 text-carbon/30">·</span>
+            {article.tiempoLectura} min
+          </p>
+        </div>
+      </a>
+    </article>
+  )
+}

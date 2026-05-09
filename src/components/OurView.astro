@@ -1,0 +1,37 @@
+---
+interface Props {
+  titulo: string;
+  declaracion: string;
+  firma?: string;
+}
+
+const { titulo, declaracion, firma = 'Comité editorial' } = Astro.props;
+---
+
+<section class="bg-celeste/10 py-16 sm:py-20">
+  <div class="mx-auto max-w-3xl px-6 text-center">
+    <p class="font-sans text-[11px] font-medium uppercase tracking-widest text-celeste-dark sm:text-[12px]">
+      Nuestra mirada
+    </p>
+    <div
+      class="mx-auto my-3 h-[2px] w-16 bg-celeste sm:w-20"
+      aria-hidden="true"
+    >
+    </div>
+    <h2
+      class="font-serif text-[22px] font-medium leading-[1.25] text-ink sm:text-[28px] lg:text-[32px]"
+    >
+      {titulo}
+    </h2>
+    <blockquote
+      class="my-0 mt-5 font-serif text-[16px] italic leading-[1.6] text-carbon sm:mt-6 sm:text-[17px] lg:text-[18px]"
+    >
+      {declaracion}
+    </blockquote>
+    <p
+      class="mt-8 font-sans text-[11px] font-medium uppercase tracking-wider text-carbon/70 sm:text-[12px]"
+    >
+      — {firma}
+    </p>
+  </div>
+</section>

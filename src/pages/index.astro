@@ -1,0 +1,64 @@
+---
+import SiteShell from '../layouts/SiteShell.astro';
+import CoverStory from '../components/CoverStory.astro';
+import WhatMatters from '../components/WhatMatters.astro';
+import OpinionSection from '../components/OpinionSection.astro';
+import LatestDispatches from '../components/LatestDispatches.astro';
+import InvestigationSection from '../components/InvestigationSection.astro';
+import MostRead from '../components/MostRead.astro';
+import OurView from '../components/OurView.astro';
+
+import {
+  getCoverArticle,
+  getDestacadas,
+  getOpinion,
+  getLatest,
+  getMostRead,
+  getInvestigaciones,
+  getJudiciales,
+} from '../data/content';
+import type { TickerItem } from '../types';
+import { newsMediaOrganizationSchema } from '../lib/seo';
+
+const cover = getCoverArticle();
+// Excluir el cover de las destacadas para evitar duplicación visual.
+const destacadas = getDestacadas(4).filter((a) => a.slug !== cover?.slug).slice(0, 3);
+const opinion = getOpinion(3);
+const ultimas = getLatest(3);
+const investigaciones = getInvestigaciones(6);
+const judiciales = getJudiciales(5);
+const masLeidas = getMostRead(5);
+
+const tickerItems: TickerItem[] = [
+  { label: 'Dólar oficial', value: '$1.040', change: 0.2 },
+  { label: 'Blue', value: '$1.180', change: -0.5 },
+  { label: 'MEP', value: '$1.165', change: 0.1 },
+  { label: 'CCL', value: '$1.190', change: 0.3 },
+  { label: 'IPC abril', value: '1,9%' },
+  { label: 'Riesgo país', value: '548 pbs', change: -1.2 },
+  { label: 'Merval', value: '1.928.450', change: 0.8 },
+];
+
+const siteOrigin = Astro.site ?? new URL('/', Astro.url);
+const orgSchema = newsMediaOrganizationSchema(siteOrigin);
+---
+
+<SiteShell
+  title="Argentina al día — Las noticias de Argentina, todos los días"
+  description="Periodismo independiente, federal y editado. Política, economía, sociedad y cultura desde todas las provincias del país."
+  ogType="website"
+  jsonLd={orgSchema}
+  tickerItems={tickerItems}
+>
+  {cover && <CoverStory article={cover} />}
+  {cover && <div class="h-[2px] w-full bg-celeste" aria-hidden="true" />}
+  <WhatMatters articles={destacadas} />
+  <OpinionSection articles={opinion} />
+  <LatestDispatches articles={ultimas} />
+  <InvestigationSection investigaciones={investigaciones} judiciales={judiciales} />
+  <MostRead articles={masLeidas} />
+  <OurView
+    titulo="Por qué seguimos leyendo el diario"
+    declaracion="En el ruido de los algoritmos, los WhatsApp en cadena y los influencers que opinan sin chequear, el diario sigue siendo el lugar donde alguien mira los datos, llama a la fuente y pone la firma. No es nostalgia: es el contrato de mínima entre quien escribe y quien lee. Lo seguimos cumpliendo."
+  />
+</SiteShell>
