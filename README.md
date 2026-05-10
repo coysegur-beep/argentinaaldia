@@ -7,7 +7,7 @@
 El sitio está construido con Astro 5 (build estático, sin server) y Tailwind, los contenidos viven en Sanity, y se deploya en Cloudflare Pages. Esa decisión de stack responde a tres prioridades de un diario digital: **velocidad** (cada milisegundo de TTFB cuesta lectores), **accesibilidad** (los lectores no son developers) y **mantenimiento simple** (un equipo chico tiene que poder operarlo sin un SRE).
 
 - **Sitio público:** [argentinaaldia.com](https://argentinaaldia.com)
-- **Studio (CMS):** `https://argentinaaldia.sanity.studio` (después del primer deploy)
+- **Studio (CMS):** `https://argentinaaldia.sanity.studio`
 
 ## Requisitos
 
