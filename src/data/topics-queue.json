@@ -5,7 +5,10 @@
     "categoria": "politica",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre los patrones políticos persistentes desde 1983: alternancias, tensiones institucionales, calidad democrática como deuda pendiente. Evitar nombrar gobiernos puntuales o atribuir responsabilidades a personas específicas; trabajar con tendencias estructurales.",
-    "prioridad": 1
+    "prioridad": 1,
+    "consumed": true,
+    "consumed_at": "2026-05-10T00:42:46.233Z",
+    "sanity_id": "drafts.ai-cuatro-decadas-de-democracia-un-recorrido-por-las-deudas-y-los-patrones-persiste"
   },
   {
     "id": "topic-002",
