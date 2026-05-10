@@ -171,8 +171,61 @@ function readOrInitUsage() {
 }
 
 // -----------------------------------------------------------------------------
-// 5. System prompt + builder de user prompt
+// 5. Schema declarativo para structured output + system prompt + user prompt
 // -----------------------------------------------------------------------------
+//
+// Cuando se pasa `responseSchema` junto con `responseMimeType: 'application/json'`,
+// el SDK garantiza que `response.text()` sea JSON válido parseable, con todos
+// los campos required presentes y los tipos correctos. Elimina los crashes
+// observados en producción donde gemini-2.5-flash devolvía claves duplicadas
+// o strings sin cerrar bajo presión de longitud.
+const RESPONSE_SCHEMA = {
+  type: 'object',
+  properties: {
+    titulo: {
+      type: 'string',
+      description: 'Hasta 110 caracteres, sin clickbait.',
+    },
+    bajada: {
+      type: 'string',
+      description: '2-3 oraciones, hasta 280 caracteres, agrega contexto.',
+    },
+    cuerpo_md: {
+      type: 'string',
+      description: '600-1100 palabras en markdown simple (## subtítulos + párrafos).',
+    },
+    tags: {
+      type: 'array',
+      items: { type: 'string' },
+      description: '3-6 tags, kebab-case minúsculas.',
+    },
+    palabras_clave_seo: {
+      type: 'array',
+      items: { type: 'string' },
+      description: '5-8 frases para SEO/indexación.',
+    },
+    tiempo_lectura_min: {
+      type: 'integer',
+      description: 'Entre 3 y 8.',
+    },
+    pending_facts: {
+      type: 'array',
+      items: { type: 'string' },
+      description: 'Datos específicos que conviene verificar antes de publicar (puede quedar vacío).',
+    },
+  },
+  required: ['titulo', 'bajada', 'cuerpo_md', 'tags', 'tiempo_lectura_min'],
+  propertyOrdering: [
+    'titulo',
+    'bajada',
+    'cuerpo_md',
+    'tags',
+    'palabras_clave_seo',
+    'tiempo_lectura_min',
+    'pending_facts',
+  ],
+};
+
 const SYSTEM_PROMPT = `Sos un periodista argentino con voz editorial. Producís notas de OPINIÓN o ANÁLISIS — nunca breaking news con datos puntuales.
 
 REGLAS DURAS (no negociables):
@@ -183,17 +236,14 @@ REGLAS DURAS (no negociables):
 - Largo del cuerpo: 600 a 1100 palabras.
 - Formato Markdown SIMPLE en \`cuerpo_md\`: solo párrafos separados por línea en blanco y subtítulos \`## ...\`. SIN negrita, SIN itálica, SIN links, SIN listas, SIN blockquotes. Si querés énfasis, usalo en la prosa, no con sintaxis.
 
-OUTPUT — devolvé EXCLUSIVAMENTE un JSON válido con esta shape exacta. SIN texto antes, SIN texto después, SIN backticks, SIN \`\`\`json:
-
-{
-  "titulo": "...",                      // hasta 110 caracteres, sin clickbait
-  "bajada": "...",                      // 2-3 oraciones, hasta 280 caracteres, agrega contexto
-  "cuerpo_md": "## ...\\n\\n...",        // 600-1100 palabras, markdown simple
-  "tags": ["...", "..."],               // 3-6 tags, kebab-case minúsculas
-  "palabras_clave_seo": ["...", "..."], // 5-8 frases para SEO/indexación
-  "tiempo_lectura_min": 5,              // entero entre 3 y 8
-  "pending_facts": ["...", "..."]       // datos específicos que conviene verificar antes de publicar (puede ser [])
-}`;
+CAMPOS DE SALIDA (el schema los valida automáticamente; estas notas indican estilo y longitud):
+- titulo: hasta 110 caracteres, sin clickbait.
+- bajada: 2-3 oraciones, hasta 280 caracteres, agrega contexto que el título no contesta.
+- cuerpo_md: 600-1100 palabras, markdown simple.
+- tags: 3-6 tags, kebab-case minúsculas.
+- palabras_clave_seo: 5-8 frases para SEO/indexación.
+- tiempo_lectura_min: entero entre 3 y 8.
+- pending_facts: datos específicos que conviene verificar antes de publicar (puede quedar vacío).`;
 
 function buildUserPrompt(topic) {
   const tipoMap = {
@@ -207,7 +257,6 @@ function buildUserPrompt(topic) {
     `Escribí una ${tipoDesc} para la sección "${topic.categoria}".`,
     `Título sugerido (podés ajustarlo si mejora): "${topic.titulo_sugerido}".`,
     topic.prompt_extra ? `Brief editorial:\n${topic.prompt_extra}` : null,
-    'Devolvé el JSON exacto con la shape pedida en el system prompt.',
   ]
     .filter(Boolean)
     .join('\n\n');
@@ -217,9 +266,11 @@ function buildUserPrompt(topic) {
 // 6. Llamada a Gemini API (responseMimeType: 'application/json' fuerza el JSON)
 // -----------------------------------------------------------------------------
 async function callModel(model, topic) {
-  // Gemini soporta `responseMimeType: 'application/json'` nativo en
-  // generationConfig, configurado al instanciar el modelo. Eso garantiza
-  // output JSON puro sin necesitar el prefill `{` que usaba Claude.
+  // Structured output: `responseMimeType: 'application/json'` + `responseSchema`
+  // garantizan JSON válido parseable, con campos required presentes y tipos
+  // correctos. Elimina los crashes que vimos en producción (claves duplicadas,
+  // strings sin cerrar) cuando el modelo se autorregulaba el formato bajo
+  // presión de longitud.
   const result = await model.generateContent(buildUserPrompt(topic));
   const text = result.response.text();
 
@@ -286,6 +337,7 @@ async function main() {
         systemInstruction: SYSTEM_PROMPT,
         generationConfig: {
           responseMimeType: 'application/json',
+          responseSchema: RESPONSE_SCHEMA,
           maxOutputTokens: 4096,
         },
       });
