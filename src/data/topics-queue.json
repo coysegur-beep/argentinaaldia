@@ -24,7 +24,10 @@
     "categoria": "economia",
     "tipo": "explicativo",
     "prompt_extra": "Explicativo didáctico para lector general. Qué es el cepo, por qué surgen las brechas (oficial, blue, MEP, CCL), qué consecuencias tiene en la economía cotidiana. Tono pedagógico, sin opinar de gestiones específicas.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-05-10T14:38:58.428Z",
+    "sanity_id": "drafts.ai-el-cepo-cambiario-explicado-claves-para-entender-la-brecha-y-sus-efectos-en-la-e"
   },
   {
     "id": "topic-004",
