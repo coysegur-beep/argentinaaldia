@@ -6,7 +6,7 @@ import Pagination from '../components/Pagination.astro';
 import SanityImage from '../components/SanityImage.astro';
 import { categories, getArticlesByCategory } from '../data/content';
 import { formatDate, formatRelative } from '../lib/format';
-import { absoluteUrl } from '../lib/seo';
+import { absoluteUrl, buildPageTitle, buildPageDescription } from '../lib/seo';
 
 export const getStaticPaths = (() => {
   const PAGE_SIZE = 20;
@@ -36,9 +36,17 @@ const restItems = articles.slice(5);
 const siteOrigin = Astro.site ?? new URL('/', Astro.url);
 const canonicalUrl = absoluteUrl(`/${categoria.slug}`, siteOrigin);
 
-const description =
-  categoria.descripcion ??
-  `Las últimas noticias de ${categoria.nombre} en Argentina al día`;
+// Description: si la categoría tiene descripcion en Sanity, prefijamos
+// "Las últimas noticias de X en Argentina al día." y concatenamos. Si no,
+// fallback a un genérico ampliado que llega al rango ideal 140-160 chars.
+const pageTitle = buildPageTitle(categoria.nombre);
+const pageDescription = categoria.descripcion
+  ? buildPageDescription(categoria.descripcion, {
+      prefix: `Las últimas noticias de ${categoria.nombre} en Argentina al día. `,
+    })
+  : buildPageDescription(
+      `Las últimas noticias y análisis de ${categoria.nombre} en Argentina al día. Cobertura editorial diaria, periodismo independiente y federal.`,
+    );
 
 const collectionSchema = !isEmpty
   ? {
@@ -46,7 +54,7 @@ const collectionSchema = !isEmpty
       '@type': 'CollectionPage',
       '@id': canonicalUrl,
       name: `${categoria.nombre} — Argentina al día`,
-      description,
+      description: pageDescription,
       url: canonicalUrl,
       isPartOf: {
         '@type': 'WebSite',
@@ -76,16 +84,12 @@ function fechaCorta(iso: string): string {
 ---
 
 <SiteShell
-  title={`${categoria.nombre} - Argentina al día`}
-  description={description}
+  title={pageTitle}
+  description={pageDescription}
   canonical={canonicalUrl}
   activeSection={categoria.slug}
   nextUrl={nextUrl}
   ogType="website"
-  ogTitle={categoria.nombre}
-  ogDescription={description}
-  ogImage={cover?.imagenPrincipal.src}
-  ogImageAlt={cover?.imagenPrincipal.alt}
   jsonLd={collectionSchema}
 >
   {/* ZONA 1: Header de categoría */}

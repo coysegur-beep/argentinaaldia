@@ -6,6 +6,7 @@ import {
   getMostRead,
   getArticlesByCategory,
 } from '../data/content';
+import { buildPageTitle, buildPageDescription } from '../lib/seo';
 
 const recientes = getMostRead(5);
 const seccionesActivas = categories
@@ -16,8 +17,10 @@ const seccionesActivas = categories
 ---
 
 <SiteShell
-  title="Esta nota se mudó o nunca existió — Argentina al día"
-  description="No encontramos lo que buscabas. Probá con el buscador o seguí por las secciones más activas."
+  title={buildPageTitle('Página no encontrada')}
+  description={buildPageDescription(
+    'No encontramos lo que buscabas. Probá con el buscador o seguí por las secciones más activas.',
+  )}
   noindex={true}
 >
   <section class="border-b border-ink/10 bg-bone">

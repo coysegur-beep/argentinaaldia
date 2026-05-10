@@ -5,6 +5,7 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import PortableTextRenderer from '../../components/PortableTextRenderer.astro';
 import SanityImage from '../../components/SanityImage.astro';
 import { authors, getArticlesByAuthor } from '../../data/content';
+import { buildPageTitle, buildPageDescription, truncate } from '../../lib/seo';
 
 export const getStaticPaths = (() => {
   return authors.map((a) => ({
@@ -15,11 +16,29 @@ export const getStaticPaths = (() => {
 
 const { autor, articulos } = Astro.props;
 const primerNombre = autor.nombre.split(' ')[0];
+
+const pageTitle = buildPageTitle(autor.nombre);
+// Description: si hay bio (string), truncar a 100 chars y concatenar tras
+// el prefix. Si no hay bio (caso edge: autor sin bio en Sanity), usar
+// fallback con el cargo. La bio en samples es siempre string; PortableText
+// para bio existe en el schema pero solo string es tratado acá — el caso
+// PortableText caería al fallback (acotado y aceptable hasta que tengamos
+// un autor con bio en bloques reales).
+const bioStr = typeof autor.bio === 'string' ? autor.bio.trim() : '';
+const pageDescription = bioStr
+  ? buildPageDescription(truncate(bioStr, 100), {
+      prefix: `Notas y cobertura de ${autor.nombre} en Argentina al día. `,
+    })
+  : buildPageDescription(
+      `Notas y cobertura de ${autor.nombre}, ${autor.cargo}, en Argentina al día.`,
+    );
 ---
 
 <SiteShell
-  title={`${autor.nombre} — Argentina al día`}
-  description={`Notas de ${autor.nombre}, ${autor.cargo} en Argentina al día.`}
+  title={pageTitle}
+  description={pageDescription}
+  ogImage={autor.foto}
+  ogImageAlt={`Foto de ${autor.nombre}`}
 >
   <header class="border-b border-ink/10 bg-bone">
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">

@@ -1,6 +1,7 @@
 ---
 import SiteShell from '../layouts/SiteShell.astro';
 import { articles } from '../data/content';
+import { buildPageTitle, buildPageDescription } from '../lib/seo';
 
 const searchData = articles.map((a) => ({
   titulo: a.titulo,
@@ -20,8 +21,10 @@ const searchJson = JSON.stringify(searchData).replace(/</g, '\\u003c');
 ---
 
 <SiteShell
-  title="Buscar — Argentina al día"
-  description="Buscador de notas de Argentina al día"
+  title={buildPageTitle('Buscar')}
+  description={buildPageDescription(
+    'Buscador interno de notas, autores y temas de Argentina al día.',
+  )}
   noindex={true}
 >
   <header class="border-b border-ink/10 bg-bone">

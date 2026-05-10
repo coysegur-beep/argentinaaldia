@@ -12,6 +12,8 @@ import {
   newsArticleSchema,
   breadcrumbSchema,
   absoluteUrl,
+  buildPageTitle,
+  buildPageDescription,
 } from '../../lib/seo';
 
 export const getStaticPaths = (() => {
@@ -48,12 +50,10 @@ const breadcrumb = breadcrumbSchema(
 ---
 
 <SiteShell
-  title={`${article.titulo} — Argentina al día`}
-  description={article.copete}
+  title={buildPageTitle(article.titulo)}
+  description={buildPageDescription(article.copete)}
   activeSection={article.categoria.slug}
   ogType="article"
-  ogTitle={article.titulo}
-  ogDescription={article.copete}
   ogImage={article.imagenPrincipal.src}
   ogImageAlt={article.imagenPrincipal.alt}
   article={{

@@ -35,6 +35,10 @@ export const OG_DEFAULT_IMAGE = {
 export const OG_TITLE_MAX = 60;
 export const OG_DESCRIPTION_MAX = 160;
 
+/** Si la parte específica supera este umbral, se omite el sufijo de marca
+ *  para no colaborar al overflow visual en SERP/social cards. */
+export const TITLE_SUFFIX_OMIT_THRESHOLD = 55;
+
 export function truncate(text: string, max: number): string {
   const t = text.trim();
   if (t.length <= max) return t;
@@ -42,6 +46,52 @@ export function truncate(text: string, max: number): string {
   const lastSpace = cut.lastIndexOf(' ');
   const base = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut;
   return base.replace(/[.,;:\-—\s]+$/, '') + '…';
+}
+
+/**
+ * Arma el `<title>` aplicando la convención del sitio:
+ *   - Si la parte específica es ≤55 chars: `<específico> | Argentina al día`
+ *   - Si supera 55 chars: devuelve la parte específica sola, sin sufijo
+ *
+ * NO se trunca a 60. La identidad entre `<title>`, `og:title` y
+ * `twitter:title` se mantiene a longitud completa — cada plataforma
+ * (Google SERP, Twitter, WhatsApp, browser tab) trunca visualmente como
+ * mejor le sirve, pero el contenido textual canónico queda completo en
+ * el HTML para que Google pueda indexar la frase entera.
+ *
+ * Use cases:
+ *   buildPageTitle('Política')                        → 'Política | Argentina al día'
+ *   buildPageTitle('Política — Página 2')             → 'Política — Página 2 | Argentina al día'
+ *   buildPageTitle('Buscar')                          → 'Buscar | Argentina al día'
+ *   buildPageTitle('Página no encontrada')            → 'Página no encontrada | Argentina al día'
+ *   buildPageTitle('Cosquín cerró con récord...')     → 'Cosquín cerró con récord... | Argentina al día'  (≤55 chars)
+ *   buildPageTitle('La producción minera marcó un nuevo récord: el litio saltó 70%...')
+ *                                                     → '<sin sufijo>'  (>55 chars)
+ */
+export function buildPageTitle(specific: string): string {
+  const s = specific.trim();
+  if (s.length > TITLE_SUFFIX_OMIT_THRESHOLD) return s;
+  return `${s} | ${SITE_NAME}`;
+}
+
+/**
+ * Arma una `meta description` con prefix opcional + contenido + suffix
+ * opcional. Trunca a OG_DESCRIPTION_MAX (160) sin cortar palabras (vía
+ * `truncate()`) y sólo agrega elipsis si efectivamente truncó.
+ *
+ * Use cases:
+ *   buildPageDescription(article.copete)
+ *   buildPageDescription(autor.bio, { prefix: `Notas de ${nombre} en Argentina al día. ` })
+ *   buildPageDescription(categoria.descripcion ?? '', { prefix: `Las últimas noticias de ${nombre} en Argentina al día. ` })
+ */
+export function buildPageDescription(
+  content: string,
+  opts: { prefix?: string; suffix?: string } = {},
+): string {
+  const prefix = opts.prefix ?? '';
+  const suffix = opts.suffix ?? '';
+  const raw = `${prefix}${content}${suffix}`.trim();
+  return truncate(raw, OG_DESCRIPTION_MAX);
 }
 
 export function absoluteUrl(path: string | URL, origin: string | URL): string {

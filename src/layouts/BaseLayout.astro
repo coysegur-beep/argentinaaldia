@@ -7,7 +7,6 @@ import {
   SITE_DESCRIPTION_DEFAULT,
   TWITTER_HANDLE,
   OG_DEFAULT_IMAGE,
-  OG_TITLE_MAX,
   OG_DESCRIPTION_MAX,
   truncate,
   ogImageUrl,
@@ -60,7 +59,15 @@ const canonicalHref = absoluteUrl(canonical ?? Astro.url.pathname, siteOrigin);
 const prevHref = prevUrl ? absoluteUrl(prevUrl, siteOrigin) : null;
 const nextHref = nextUrl ? absoluteUrl(nextUrl, siteOrigin) : null;
 
-const ogTitleFinal = truncate(ogTitle ?? title, OG_TITLE_MAX);
+// Identidad estricta entre <title>, og:title y twitter:title: los tres
+// emiten el mismo string completo. NO se trunca el title — la regla del
+// proyecto es identidad textual, no brevedad. Cada plataforma (Google,
+// Twitter, WhatsApp, browser tab) trunca visualmente como mejor le sirve;
+// el contenido textual canónico queda completo en el HTML para indexación.
+const ogTitleFinal = ogTitle ?? title;
+// Descriptions sí se truncan a 160 (defense in depth — los helpers de
+// seo.ts ya truncan, este truncate doble es safety si alguien pasa una
+// description cruda sin pasar por buildPageDescription()).
 const ogDescriptionFinal = truncate(
   ogDescription ?? description,
   OG_DESCRIPTION_MAX,

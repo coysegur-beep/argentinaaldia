@@ -4,6 +4,7 @@ import SiteShell from '../../../layouts/SiteShell.astro';
 import ArticleCard from '../../../components/ArticleCard.astro';
 import Pagination from '../../../components/Pagination.astro';
 import { categories, getArticlesByCategory } from '../../../data/content';
+import { buildPageTitle, buildPageDescription } from '../../../lib/seo';
 
 export const getStaticPaths = (({ paginate }) => {
   const PAGE_SIZE = 20;
@@ -35,11 +36,20 @@ const prevUrl = currentPage === 2
 const nextUrl = currentPage < totalPages
   ? `/${categoria.slug}/p/${currentPage + 1}`
   : undefined;
+
+const pageTitle = buildPageTitle(`${categoria.nombre} — Página ${currentPage}`);
+const pageDescription = categoria.descripcion
+  ? buildPageDescription(categoria.descripcion, {
+      prefix: `Las últimas noticias de ${categoria.nombre} en Argentina al día. `,
+    })
+  : buildPageDescription(
+      `Las últimas noticias y análisis de ${categoria.nombre} en Argentina al día. Cobertura editorial diaria, periodismo independiente y federal.`,
+    );
 ---
 
 <SiteShell
-  title={`${categoria.nombre} — Página ${currentPage} — Argentina al día`}
-  description={categoria.descripcion ?? `Noticias de ${categoria.nombre} en Argentina al día`}
+  title={pageTitle}
+  description={pageDescription}
   activeSection={categoria.slug}
   canonical={canonical}
   prevUrl={prevUrl}
