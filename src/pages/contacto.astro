@@ -1,43 +1,50 @@
 ---
 import SiteShell from '../layouts/SiteShell.astro';
 
-// TODO: actualizar handles y URLs cuando estén las cuentas reales creadas
-const redes = [
+// Type explícito de íconos disponibles. Sumar un nuevo canal requiere:
+//   1) crear/conseguir la cuenta real,
+//   2) agregar el slug al union,
+//   3) agregar el SVG en el switch del template más abajo.
+// TypeScript bloquea reintroducir un slug sin SVG correspondiente.
+type IconName = 'x' | 'instagram' | 'facebook' | 'email';
+
+interface Red {
+  label: string;
+  handle: string;
+  url: string;
+  icon: IconName;
+}
+
+const redes: Red[] = [
   {
     label: 'Twitter / X',
-    handle: '@argentinaaldia',
-    url: 'https://twitter.com/argentinaaldia',
-    icon: 'x' as const,
+    handle: '@Argentinal_Dia',
+    url: 'https://x.com/Argentinal_Dia',
+    icon: 'x',
   },
   {
     label: 'Instagram',
-    handle: '@argentinaaldia',
-    url: 'https://instagram.com/argentinaaldia',
-    icon: 'instagram' as const,
+    handle: '@argentinal_dia',
+    url: 'https://www.instagram.com/argentinal_dia',
+    icon: 'instagram',
   },
   {
     label: 'Facebook',
-    handle: 'facebook.com/argentinaaldia',
-    url: 'https://facebook.com/argentinaaldia',
-    icon: 'facebook' as const,
-  },
-  {
-    label: 'YouTube',
-    handle: '@argentinaaldia',
-    url: 'https://youtube.com/@argentinaaldia',
-    icon: 'youtube' as const,
+    handle: 'Argentina al día',
+    url: 'https://www.facebook.com/share/18d8cLQWJN/',
+    icon: 'facebook',
   },
   {
     label: 'Email',
     handle: 'contacto@argentinaaldia.com',
     url: 'mailto:contacto@argentinaaldia.com',
-    icon: 'email' as const,
+    icon: 'email',
   },
 ];
 
 const title = 'Contacto — Argentina al día';
 const description =
-  'Seguinos en Twitter, Instagram, Facebook, YouTube. Escribinos a contacto@argentinaaldia.com.';
+  'Seguinos en X, Instagram y Facebook. Escribinos a contacto@argentinaaldia.com.';
 ---
 
 <SiteShell title={title} description={description} canonical="/contacto">
@@ -108,16 +115,6 @@ const description =
                     aria-hidden="true"
                   >
                     <path d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.66 9.18 8.45 9.94v-7.03H7.9v-2.91h2.55v-2.21c0-2.52 1.5-3.91 3.79-3.91 1.1 0 2.25.2 2.25.2v2.47h-1.27c-1.25 0-1.64.78-1.64 1.57v1.88h2.79l-.45 2.91h-2.34V22c4.78-.76 8.45-4.92 8.45-9.94z" />
-                  </svg>
-                )}
-                {r.icon === 'youtube' && (
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    class="h-6 w-6"
-                    aria-hidden="true"
-                  >
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                   </svg>
                 )}
                 {r.icon === 'email' && (

@@ -8,12 +8,12 @@ export const SITE_LANG = 'es-AR';
 export const SITE_LOCALE = 'es_AR';
 export const SITE_COUNTRY = 'AR';
 
-export const TWITTER_HANDLE = '@argentinaaldia';
+export const TWITTER_HANDLE = '@Argentinal_Dia';
 
 export const SITE_SOCIALS = [
-  'https://twitter.com/argentinaaldia',
-  'https://instagram.com/argentinaaldia',
-  'https://facebook.com/argentinaaldia',
+  'https://x.com/Argentinal_Dia',
+  'https://www.instagram.com/argentinal_dia',
+  'https://www.facebook.com/share/18d8cLQWJN/',
 ];
 
 // PNG raster — generado desde el SVG fuente vía `npm run og:generate`.
