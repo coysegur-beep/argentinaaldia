@@ -16,7 +16,10 @@
     "categoria": "economia",
     "tipo": "analisis",
     "prompt_extra": "Por qué Argentina exporta lo que exporta: estructura del comercio exterior dominada por commodities, vulnerabilidad a precios internacionales, tensión histórica entre campo y gobierno. Sin cifras inventadas; si necesitás un dato específico, dejalo en abstracto o pedilo en pending_facts.",
-    "prioridad": 1
+    "prioridad": 1,
+    "consumed": true,
+    "consumed_at": "2026-05-11T17:51:59.874Z",
+    "sanity_id": "drafts.ai-el-peso-del-agro-en-la-balanza-comercial-argentina-un-analisis-historico-y-estru"
   },
   {
     "id": "topic-003",
