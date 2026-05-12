@@ -38,7 +38,10 @@
     "categoria": "provincias",
     "tipo": "opinion",
     "prompt_extra": "Reflexión sobre la asimetría histórica entre el centro (Buenos Aires) y el interior. La ley de coparticipación, la pulseada por recursos, las economías regionales subordinadas a la macro nacional. Marco histórico, sin nombrar funcionarios.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-05-12T18:20:50.065Z",
+    "sanity_id": "drafts.ai-federalismo-argentino-la-promesa-que-la-coparticipacion-no-resuelve"
   },
   {
     "id": "topic-005",
@@ -46,6 +49,9 @@
     "categoria": "cultura",
     "tipo": "opinion",
     "prompt_extra": "Mirada cultural sobre el lugar del folclore en la identidad argentina contemporánea. Cosquín como ritual anual, la figura de Mercedes Sosa, la tensión entre tradición y consumo digital. Voz editorial argentina, voseo aceptable.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-05-12T18:21:05.097Z",
+    "sanity_id": "drafts.ai-cosquin-mercedes-sosa-y-el-folclore-la-raiz-que-persiste-en-la-era-digital"
   }
 ]
