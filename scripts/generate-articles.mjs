@@ -4,7 +4,7 @@
 //
 // Flujo:
 //   1. Lee `src/data/topics-queue.json`, filtra los topics no consumidos.
-//   2. Selecciona los próximos N (DAILY_COUNT, default 2) por prioridad.
+//   2. Selecciona los próximos N (DAILY_COUNT, default 1) por prioridad.
 //   3. Para cada topic, llama a Gemini API (gemini-2.5-flash por default) con
 //      un system prompt periodístico estricto. Pide JSON estructurado.
 //   4. Convierte el `cuerpo_md` (markdown) a Portable Text simple para el
@@ -25,7 +25,7 @@
 //   SANITY_DATASET         requerida — dataset (production por default).
 //   SANITY_API_VERSION     opcional   — default 2024-03-15.
 //   SANITY_TOKEN           requerida — token Editor para escribir drafts.
-//   DAILY_COUNT            opcional   — cuántas notas generar (default 2).
+//   DAILY_COUNT            opcional   — cuántas notas generar (default 1).
 //   MONTHLY_TOKEN_LIMIT    opcional   — tope mensual de tokens (default 1M).
 //   DRY_RUN=1              opcional   — no llama API ni escribe a Sanity ni
 //                                       actualiza queue. Útil para testear.
@@ -68,7 +68,7 @@ const SANITY_DATASET = (process.env.SANITY_DATASET ?? 'production').trim();
 const SANITY_API_VERSION = (process.env.SANITY_API_VERSION ?? '2024-03-15').trim();
 const SANITY_TOKEN = (process.env.SANITY_TOKEN ?? '').trim();
 
-const DAILY_COUNT = parseInt(process.env.DAILY_COUNT ?? '2', 10);
+const DAILY_COUNT = parseInt(process.env.DAILY_COUNT ?? '1', 10);
 const MONTHLY_TOKEN_LIMIT = parseInt(process.env.MONTHLY_TOKEN_LIMIT ?? '1000000', 10);
 const DRY_RUN = process.env.DRY_RUN === '1';
 

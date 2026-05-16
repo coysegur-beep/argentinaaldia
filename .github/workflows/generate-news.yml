@@ -23,9 +23,9 @@ on:
   workflow_dispatch:
     inputs:
       daily_count:
-        description: 'Cuántas notas generar (default 2)'
+        description: 'Cuántas notas generar (default 1)'
         required: false
-        default: '2'
+        default: '1'
       monthly_token_limit:
         description: 'Tope mensual de tokens (default 1000000)'
         required: false
@@ -58,7 +58,7 @@ jobs:
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
           SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-          DAILY_COUNT: ${{ github.event.inputs.daily_count || '2' }}
+          DAILY_COUNT: ${{ github.event.inputs.daily_count || '1' }}
           MONTHLY_TOKEN_LIMIT: ${{ github.event.inputs.monthly_token_limit || '1000000' }}
         run: npm run generate-articles
 

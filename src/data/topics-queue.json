@@ -53,5 +53,245 @@
     "consumed": true,
     "consumed_at": "2026-05-12T18:21:05.097Z",
     "sanity_id": "drafts.ai-cosquin-mercedes-sosa-y-el-folclore-la-raiz-que-persiste-en-la-era-digital"
+  },
+  {
+    "id": "topic-006",
+    "titulo_sugerido": "Las dos cámaras: por qué Diputados y Senado funcionan tan distinto",
+    "categoria": "politica",
+    "tipo": "explicativo",
+    "prompt_extra": "Explicativo didáctico para lector general. Composición, mandatos, atribuciones diferenciadas (Diputados representa población, Senado representa provincias), cómo se sanciona una ley entre ambas. Sin nombrar legisladores actuales.",
+    "prioridad": 1
+  },
+  {
+    "id": "topic-007",
+    "titulo_sugerido": "Qué es un DNU y por qué genera tantas peleas",
+    "categoria": "politica",
+    "tipo": "explicativo",
+    "prompt_extra": "Explicativo sobre los Decretos de Necesidad y Urgencia: marco constitucional (art. 99 inc. 3), límites materiales, control parlamentario vía bicameral. Por qué son históricamente conflictivos. Marco institucional, sin atacar gestiones puntuales.",
+    "prioridad": 1
+  },
+  {
+    "id": "topic-008",
+    "titulo_sugerido": "El bipartidismo argentino: ¿fin de ciclo o reconfiguración?",
+    "categoria": "politica",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre la erosión del esquema peronismo/antiperonismo y la aparición de terceras fuerzas en las últimas dos décadas. Pensar en tendencias estructurales, no en elecciones específicas. Sin proyectar resultados.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-009",
+    "titulo_sugerido": "La grieta como rasgo estructural, no como accidente",
+    "categoria": "politica",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo de opinión sobre la polarización política argentina como fenómeno histórico recurrente (unitarios/federales, peronismo/antiperonismo, etc.), no como invento contemporáneo. Voz editorial argentina, voseo aceptable.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-010",
+    "titulo_sugerido": "Los gobernadores como contrapeso al poder central",
+    "categoria": "politica",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre el rol histórico de los gobernadores en la política nacional: bloque parlamentario propio, pulseada por coparticipación, negociaciones con el Ejecutivo. Foco institucional, no biográfico.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-011",
+    "titulo_sugerido": "Inflación crónica: por qué Argentina convive con precios que no paran",
+    "categoria": "economia",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis estructural sobre la inflación argentina como problema multidécada: déficit fiscal, emisión, indexación, expectativas. Sin atribuir a una gestión específica. Si necesitás cifras puntuales, dejalas en pending_facts.",
+    "prioridad": 1
+  },
+  {
+    "id": "topic-012",
+    "titulo_sugerido": "Qué es el riesgo país y por qué importa para el bolsillo",
+    "categoria": "economia",
+    "tipo": "explicativo",
+    "prompt_extra": "Explicativo didáctico: cómo se calcula el riesgo país (EMBI), qué representa, por qué afecta tasas de crédito, inversión y financiamiento del Estado. Tono pedagógico, sin opinar de gestiones.",
+    "prioridad": 1
+  },
+  {
+    "id": "topic-013",
+    "titulo_sugerido": "La deuda externa argentina, contada desde 1976",
+    "categoria": "economia",
+    "tipo": "analisis",
+    "prompt_extra": "Recorrido histórico estructural sobre los ciclos de endeudamiento argentinos desde 1976: dictadura, Plan Brady, default 2001, reestructuraciones. Foco en patrones macro, no en responsabilidades personales.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-014",
+    "titulo_sugerido": "Tarifas vs subsidios: el dilema energético que cruza todas las gestiones",
+    "categoria": "economia",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo sobre la tensión persistente entre congelamiento tarifario (impacto fiscal) y sinceramiento (impacto social). Marco estructural, no coyuntural. Sin acusar gestiones puntuales.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-015",
+    "titulo_sugerido": "El dólar como obsesión nacional",
+    "categoria": "economia",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo cultural-económico sobre por qué Argentina convive con el dólar como referencia psicológica, refugio y termómetro político. Tono ensayístico, voseo argentino.",
+    "prioridad": 3
+  },
+  {
+    "id": "topic-016",
+    "titulo_sugerido": "Vaca Muerta: la promesa energética que tarda en saldarse",
+    "categoria": "provincias",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre la formación no convencional neuquina: potencial geológico, inversión necesaria, infraestructura, exportación. Tensión entre expectativas y ejecución. Marco estructural, sin promesas optimistas vacías.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-017",
+    "titulo_sugerido": "Las economías regionales y la pulseada con el dólar oficial",
+    "categoria": "provincias",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre cómo el tipo de cambio impacta diferencial en economías regionales exportadoras (vino, frutas, yerba, peras): cuando el oficial atrasa, pierden competitividad. Foco federal, sin nombrar gestiones.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-018",
+    "titulo_sugerido": "Tierra del Fuego: la industria por ley y la pregunta del subsidio",
+    "categoria": "provincias",
+    "tipo": "opinion",
+    "prompt_extra": "Reflexión sobre el régimen de promoción industrial fueguino (Ley 19.640): qué problemas resolvió, qué distorsiones generó, qué tensión hay entre soberanía territorial y costo fiscal. Voz editorial federal.",
+    "prioridad": 3
+  },
+  {
+    "id": "topic-019",
+    "titulo_sugerido": "El NOA, entre el litio y la pobreza estructural",
+    "categoria": "provincias",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre la paradoja del Noroeste: riqueza minera (litio en Jujuy, Salta, Catamarca) conviviendo con índices sociales bajos. Foco estructural, sin convertirlo en denuncia ni propaganda.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-020",
+    "titulo_sugerido": "El cine argentino, entre el Oscar y el ajuste presupuestario",
+    "categoria": "cultura",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo sobre la paradoja del cine argentino: industria con prestigio internacional (premios, festivales) que depende crónicamente del INCAA y queda en debate cada vez que hay ajuste. Sin atacar gestiones específicas.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-021",
+    "titulo_sugerido": "Borges, Cortázar, Saer: tres formas de habitar el país",
+    "categoria": "cultura",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo literario sobre tres maneras distintas de relación con Argentina desde la obra (Borges: la biblioteca; Cortázar: el exilio; Saer: el litoral). Tono ensayístico de suplemento cultural, voseo aceptable.",
+    "prioridad": 3
+  },
+  {
+    "id": "topic-022",
+    "titulo_sugerido": "La librería como refugio en la era del scroll infinito",
+    "categoria": "cultura",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo sobre la persistencia (y resignificación) de las librerías argentinas frente al consumo digital. Buenos Aires como ciudad lectora, librerías de barrio, ferias del libro. Voz editorial cálida.",
+    "prioridad": 3
+  },
+  {
+    "id": "topic-023",
+    "titulo_sugerido": "Clase media: la categoría que todos reclaman y nadie define",
+    "categoria": "sociedad",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre la elasticidad del concepto 'clase media' en Argentina: identidad sociológica, criterios de ingreso, autopercepción vs estadística. Foco estructural, sin estigmatizar grupos.",
+    "prioridad": 1
+  },
+  {
+    "id": "topic-024",
+    "titulo_sugerido": "La inmigración latinoamericana, contada sin grietas",
+    "categoria": "sociedad",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre las olas migratorias regionales (paraguaya, boliviana, peruana, venezolana) en Argentina: impacto demográfico, laboral, cultural. Sin tono xenófobo ni romantización; marco histórico y estadístico.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-025",
+    "titulo_sugerido": "El mate como objeto político: identidad, ritual y mercado",
+    "categoria": "sociedad",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo sobre el mate como práctica social transversal: ritual cotidiano, mercado yerbatero (Misiones/Corrientes), símbolo de identidad rioplatense. Tono ensayístico, voseo argentino.",
+    "prioridad": 3
+  },
+  {
+    "id": "topic-026",
+    "titulo_sugerido": "Por qué los argentinos se siguen yendo: anatomía de una diáspora intermitente",
+    "categoria": "sociedad",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre las olas migratorias argentinas hacia el exterior (2001, post-2018, etc.): perfil demográfico, destinos, motivaciones. Sin moralizar la decisión individual; marco socioeconómico.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-027",
+    "titulo_sugerido": "El fútbol argentino, entre la pasión popular y la crisis dirigencial",
+    "categoria": "deportes",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo sobre la tensión entre el fútbol como fenómeno cultural masivo y la AFA/dirigencia como institución cuestionada. Foco estructural sin nombrar dirigentes puntuales. Voz editorial argentina.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-028",
+    "titulo_sugerido": "Cómo funciona la AFA: estructura, votos y poder",
+    "categoria": "deportes",
+    "tipo": "explicativo",
+    "prompt_extra": "Explicativo institucional sobre la Asociación del Fútbol Argentino: clubes asociados, ponderación de votos (Primera vs ascensos), elección de autoridades, vínculo con CONMEBOL/FIFA. Tono pedagógico, sin opinar.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-029",
+    "titulo_sugerido": "Hockey, rugby, tenis: la Argentina más allá del fútbol",
+    "categoria": "deportes",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre el rendimiento internacional argentino en disciplinas no futboleras: Las Leonas (hockey), Los Pumas (rugby), tradición tenística. Por qué tienen éxito a pesar de menor inversión y exposición.",
+    "prioridad": 3
+  },
+  {
+    "id": "topic-030",
+    "titulo_sugerido": "La televisión abierta argentina, ¿agoniza o muta?",
+    "categoria": "espectaculos",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre el estado de la TV abierta argentina frente al streaming: pérdida de audiencia, ciclos de prime time, supervivencia de magazines y noticieros. Mirada de industria, sin culto a personalidades.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-031",
+    "titulo_sugerido": "Bizarrap, Lali, Tini: el pop argentino como exportación global",
+    "categoria": "espectaculos",
+    "tipo": "opinion",
+    "prompt_extra": "Ensayo sobre la nueva ola del pop argentino con proyección internacional (Bizarrap, Lali Espósito, Tini Stoessel, Duki). Industria, redes sociales, productores. Tono cultural, no fan, voseo argentino.",
+    "prioridad": 3
+  },
+  {
+    "id": "topic-032",
+    "titulo_sugerido": "La Argentina ante el Mercosur: socio fundador, vecino incómodo",
+    "categoria": "mundo",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre la trayectoria de Argentina en el Mercosur desde 1991: oscilaciones de compromiso con la integración, tensiones con Brasil, posiciones frente a acuerdos extra-bloque. Foco institucional.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-033",
+    "titulo_sugerido": "Por qué a Argentina le cuesta una política exterior estable",
+    "categoria": "mundo",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre los giros recurrentes de la política exterior argentina (alianzas, no alineamiento, pendulación EEUU/China/Latam). Marco histórico, sin culpar a una gestión específica.",
+    "prioridad": 3
+  },
+  {
+    "id": "topic-034",
+    "titulo_sugerido": "Soja, trigo, maíz: la matriz exportadora para no entendidos",
+    "categoria": "agro",
+    "tipo": "explicativo",
+    "prompt_extra": "Explicativo didáctico sobre los tres cultivos extensivos clave de Argentina: zonas productoras, ciclo agrícola, peso en exportaciones, cadena de valor. Tono pedagógico, sin retenciones como debate central.",
+    "prioridad": 2
+  },
+  {
+    "id": "topic-035",
+    "titulo_sugerido": "Retenciones: la pelea histórica entre el campo y el Estado",
+    "categoria": "agro",
+    "tipo": "analisis",
+    "prompt_extra": "Análisis sobre los derechos de exportación agropecuarios desde 2002: instrumento fiscal vs incentivo distorsivo, conflictos políticos (incluida la Resolución 125 de 2008). Marco histórico, sin tomar partido.",
+    "prioridad": 2
   }
 ]
