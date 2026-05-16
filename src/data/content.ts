@@ -25,6 +25,15 @@ import type { Article, Author, Category, CategorySlug } from '../types';
 
 type Source = 'sanity' | 'samples' | 'samples-fallback';
 
+// Detecta build productivo en Cloudflare Pages. CF expone `CF_PAGES=1` durante
+// cualquier build, y `CF_PAGES_BRANCH` con el nombre de la branch que se está
+// buildeando (en preview deploys de PRs es la branch del PR, no `main`).
+// En prod build, caer a samples es un failure mode que debe abortar el deploy
+// — un medio de noticias no puede servir contenido de muestra en silencio.
+// En dev y en previews, el fallback a samples sigue siendo aceptable.
+const IS_PROD_BUILD =
+  process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH === 'main';
+
 /**
  * ¿Esta nota es visible públicamente AHORA?
  *
@@ -87,6 +96,20 @@ if (isSanityConfigured) {
   _categories = sampleCategories;
   _source = 'samples';
   console.info('[content] source: samples (Sanity not configured)');
+}
+
+// Fail-loud en prod: si después de toda la cascada terminamos con samples,
+// abortamos el build antes de deployar. Esto cubre los 3 paths de fallback
+// (catch del fetch, sanityInitError, y Sanity no configurado). Incidente
+// que motiva esto: SANITY_TOKEN revocado en CF Pages → fetch 401 →
+// fallback silencioso a samples → 4+ días sirviendo contenido de muestra
+// sin alerta. Ver content.ts:fallback() para el flow anterior.
+if (IS_PROD_BUILD && _source !== 'sanity') {
+  throw new Error(
+    `[content] Production build refused: data source resolved to "${_source}", expected "sanity". ` +
+      `Sample data must not reach production. Verify SANITY_PROJECT_ID, SANITY_DATASET, ` +
+      `and dataset access in Cloudflare Pages environment variables.`,
+  );
 }
 
 // Defensa en profundidad: filtra notas con fechaPublicacion futura.
