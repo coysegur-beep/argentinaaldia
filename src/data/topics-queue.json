@@ -60,7 +60,10 @@
     "categoria": "politica",
     "tipo": "explicativo",
     "prompt_extra": "Explicativo didáctico para lector general. Composición, mandatos, atribuciones diferenciadas (Diputados representa población, Senado representa provincias), cómo se sanciona una ley entre ambas. Sin nombrar legisladores actuales.",
-    "prioridad": 1
+    "prioridad": 1,
+    "consumed": true,
+    "consumed_at": "2026-05-17T16:47:18.050Z",
+    "sanity_id": "drafts.ai-las-dos-camaras-del-congreso-un-diseno-bicameral-y-sus-logicas-diferenciadas"
   },
   {
     "id": "topic-007",
