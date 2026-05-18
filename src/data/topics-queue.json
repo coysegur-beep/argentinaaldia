@@ -106,7 +106,10 @@
     "categoria": "economia",
     "tipo": "analisis",
     "prompt_extra": "Análisis estructural sobre la inflación argentina como problema multidécada: déficit fiscal, emisión, indexación, expectativas. Sin atribuir a una gestión específica. Si necesitás cifras puntuales, dejalas en pending_facts.",
-    "prioridad": 1
+    "prioridad": 1,
+    "consumed": true,
+    "consumed_at": "2026-05-18T18:16:57.218Z",
+    "sanity_id": "drafts.ai-inflacion-cronica-por-que-argentina-no-logra-soltar-la-espiral-de-precios"
   },
   {
     "id": "topic-012",
