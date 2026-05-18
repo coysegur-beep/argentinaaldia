@@ -71,7 +71,10 @@
     "categoria": "politica",
     "tipo": "explicativo",
     "prompt_extra": "Explicativo sobre los Decretos de Necesidad y Urgencia: marco constitucional (art. 99 inc. 3), límites materiales, control parlamentario vía bicameral. Por qué son históricamente conflictivos. Marco institucional, sin atacar gestiones puntuales.",
-    "prioridad": 1
+    "prioridad": 1,
+    "consumed": true,
+    "consumed_at": "2026-05-18T18:09:42.003Z",
+    "sanity_id": "drafts.ai-decretos-de-necesidad-y-urgencia-una-herramienta-excepcional-que-enciende-debate"
   },
   {
     "id": "topic-008",
