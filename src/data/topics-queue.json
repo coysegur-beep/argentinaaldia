@@ -117,7 +117,10 @@
     "categoria": "economia",
     "tipo": "explicativo",
     "prompt_extra": "Explicativo didáctico: cómo se calcula el riesgo país (EMBI), qué representa, por qué afecta tasas de crédito, inversión y financiamiento del Estado. Tono pedagógico, sin opinar de gestiones.",
-    "prioridad": 1
+    "prioridad": 1,
+    "consumed": true,
+    "consumed_at": "2026-05-20T19:37:40.714Z",
+    "sanity_id": "drafts.ai-el-riesgo-pais-una-guia-didactica-para-entender-su-impacto-en-tu-bolsillo"
   },
   {
     "id": "topic-013",
