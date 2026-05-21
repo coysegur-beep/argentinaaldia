@@ -208,7 +208,10 @@
     "categoria": "sociedad",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre la elasticidad del concepto 'clase media' en Argentina: identidad sociológica, criterios de ingreso, autopercepción vs estadística. Foco estructural, sin estigmatizar grupos.",
-    "prioridad": 1
+    "prioridad": 1,
+    "consumed": true,
+    "consumed_at": "2026-05-21T18:18:29.130Z",
+    "sanity_id": "drafts.ai-clase-media-la-categoria-que-todos-reclaman-y-nadie-define"
   },
   {
     "id": "topic-024",
