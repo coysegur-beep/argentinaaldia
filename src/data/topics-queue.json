@@ -82,7 +82,10 @@
     "categoria": "politica",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre la erosión del esquema peronismo/antiperonismo y la aparición de terceras fuerzas en las últimas dos décadas. Pensar en tendencias estructurales, no en elecciones específicas. Sin proyectar resultados.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-05-23T14:52:23.514Z",
+    "sanity_id": "drafts.ai-el-bipartidismo-argentino-fin-de-ciclo-o-reconfiguracion"
   },
   {
     "id": "topic-009",
