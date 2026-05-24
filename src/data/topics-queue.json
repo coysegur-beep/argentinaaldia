@@ -93,7 +93,10 @@
     "categoria": "politica",
     "tipo": "opinion",
     "prompt_extra": "Ensayo de opinión sobre la polarización política argentina como fenómeno histórico recurrente (unitarios/federales, peronismo/antiperonismo, etc.), no como invento contemporáneo. Voz editorial argentina, voseo aceptable.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-05-24T12:11:50.561Z",
+    "sanity_id": "drafts.ai-la-grieta-como-rasgo-estructural-no-como-accidente-de-la-politica-argentina"
   },
   {
     "id": "topic-010",
