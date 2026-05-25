@@ -104,7 +104,10 @@
     "categoria": "politica",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre el rol histórico de los gobernadores en la política nacional: bloque parlamentario propio, pulseada por coparticipación, negociaciones con el Ejecutivo. Foco institucional, no biográfico.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-05-25T14:17:56.617Z",
+    "sanity_id": "drafts.ai-los-gobernadores-actores-centrales-en-la-compleja-trama-del-poder-argentino"
   },
   {
     "id": "topic-011",
