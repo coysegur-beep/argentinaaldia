@@ -137,7 +137,10 @@
     "categoria": "economia",
     "tipo": "analisis",
     "prompt_extra": "Recorrido histórico estructural sobre los ciclos de endeudamiento argentinos desde 1976: dictadura, Plan Brady, default 2001, reestructuraciones. Foco en patrones macro, no en responsabilidades personales.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-05-29T14:15:37.177Z",
+    "sanity_id": "drafts.ai-argentina-y-su-deuda-externa-un-ciclo-recurrente-desde-la-dictadura-de-1976"
   },
   {
     "id": "topic-014",
