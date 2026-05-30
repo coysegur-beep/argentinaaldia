@@ -148,7 +148,10 @@
     "categoria": "economia",
     "tipo": "opinion",
     "prompt_extra": "Ensayo sobre la tensión persistente entre congelamiento tarifario (impacto fiscal) y sinceramiento (impacto social). Marco estructural, no coyuntural. Sin acusar gestiones puntuales.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-05-30T12:16:09.477Z",
+    "sanity_id": "drafts.ai-tarifas-vs-subsidios-el-dilema-energetico-que-cruza-todas-las-gestiones"
   },
   {
     "id": "topic-015",
