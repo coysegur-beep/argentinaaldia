@@ -167,7 +167,10 @@
     "categoria": "provincias",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre la formación no convencional neuquina: potencial geológico, inversión necesaria, infraestructura, exportación. Tensión entre expectativas y ejecución. Marco estructural, sin promesas optimistas vacías.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-01T16:47:11.737Z",
+    "sanity_id": "drafts.ai-vaca-muerta-la-promesa-energetica-que-tarda-en-saldarse-en-el-escenario-nacional"
   },
   {
     "id": "topic-017",
