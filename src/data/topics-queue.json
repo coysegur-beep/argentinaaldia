@@ -178,7 +178,10 @@
     "categoria": "provincias",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre cómo el tipo de cambio impacta diferencial en economías regionales exportadoras (vino, frutas, yerba, peras): cuando el oficial atrasa, pierden competitividad. Foco federal, sin nombrar gestiones.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-02T15:11:48.416Z",
+    "sanity_id": "drafts.ai-el-pulso-del-dolar-oficial-y-su-eco-en-las-economias-regionales-una-tension-estr"
   },
   {
     "id": "topic-018",
