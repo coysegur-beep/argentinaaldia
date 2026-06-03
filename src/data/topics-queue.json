@@ -197,7 +197,10 @@
     "categoria": "provincias",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre la paradoja del Noroeste: riqueza minera (litio en Jujuy, Salta, Catamarca) conviviendo con índices sociales bajos. Foco estructural, sin convertirlo en denuncia ni propaganda.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-03T15:55:16.409Z",
+    "sanity_id": "drafts.ai-el-noa-entre-el-litio-y-la-pobreza-estructural-una-paradoja-persistente"
   },
   {
     "id": "topic-020",
