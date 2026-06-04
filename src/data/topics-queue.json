@@ -208,7 +208,10 @@
     "categoria": "cultura",
     "tipo": "opinion",
     "prompt_extra": "Ensayo sobre la paradoja del cine argentino: industria con prestigio internacional (premios, festivales) que depende crónicamente del INCAA y queda en debate cada vez que hay ajuste. Sin atacar gestiones específicas.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-04T14:10:53.078Z",
+    "sanity_id": "drafts.ai-el-cine-argentino-entre-el-prestigio-global-y-la-puja-presupuestaria"
   },
   {
     "id": "topic-021",
