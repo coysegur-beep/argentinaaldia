@@ -246,7 +246,10 @@
     "categoria": "sociedad",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre las olas migratorias regionales (paraguaya, boliviana, peruana, venezolana) en Argentina: impacto demográfico, laboral, cultural. Sin tono xenófobo ni romantización; marco histórico y estadístico.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-05T14:03:52.320Z",
+    "sanity_id": "drafts.ai-inmigracion-latinoamericana-en-argentina-un-analisis-de-sus-transformaciones"
   },
   {
     "id": "topic-025",
