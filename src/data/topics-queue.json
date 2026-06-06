@@ -265,7 +265,10 @@
     "categoria": "sociedad",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre las olas migratorias argentinas hacia el exterior (2001, post-2018, etc.): perfil demográfico, destinos, motivaciones. Sin moralizar la decisión individual; marco socioeconómico.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-06T12:18:32.815Z",
+    "sanity_id": "drafts.ai-por-que-los-argentinos-se-siguen-yendo-anatomia-de-una-diaspora-intermitente"
   },
   {
     "id": "topic-027",
