@@ -276,7 +276,10 @@
     "categoria": "deportes",
     "tipo": "opinion",
     "prompt_extra": "Ensayo sobre la tensión entre el fútbol como fenómeno cultural masivo y la AFA/dirigencia como institución cuestionada. Foco estructural sin nombrar dirigentes puntuales. Voz editorial argentina.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-08T14:53:09.384Z",
+    "sanity_id": "drafts.ai-el-futbol-argentino-entre-la-pasion-popular-y-la-crisis-dirigencial"
   },
   {
     "id": "topic-028",
