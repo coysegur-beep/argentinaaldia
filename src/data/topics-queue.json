@@ -287,7 +287,10 @@
     "categoria": "deportes",
     "tipo": "explicativo",
     "prompt_extra": "Explicativo institucional sobre la Asociación del Fútbol Argentino: clubes asociados, ponderación de votos (Primera vs ascensos), elección de autoridades, vínculo con CONMEBOL/FIFA. Tono pedagógico, sin opinar.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-09T13:48:33.780Z",
+    "sanity_id": "drafts.ai-el-funcionamiento-de-la-afa-una-guia-por-su-estructura-votos-y-poder"
   },
   {
     "id": "topic-029",
