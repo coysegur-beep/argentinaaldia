@@ -306,7 +306,10 @@
     "categoria": "espectaculos",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre el estado de la TV abierta argentina frente al streaming: pérdida de audiencia, ciclos de prime time, supervivencia de magazines y noticieros. Mirada de industria, sin culto a personalidades.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-10T14:29:41.848Z",
+    "sanity_id": "drafts.ai-la-television-abierta-argentina-frente-al-streaming-agoniza-o-se-reinventa"
   },
   {
     "id": "topic-031",
