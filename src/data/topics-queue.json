@@ -325,7 +325,10 @@
     "categoria": "mundo",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre la trayectoria de Argentina en el Mercosur desde 1991: oscilaciones de compromiso con la integración, tensiones con Brasil, posiciones frente a acuerdos extra-bloque. Foco institucional.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-12T14:16:06.683Z",
+    "sanity_id": "drafts.ai-la-argentina-ante-el-mercosur-socio-fundador-vecino-incomodo-en-la-integracion-r"
   },
   {
     "id": "topic-033",
