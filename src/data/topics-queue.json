@@ -344,7 +344,10 @@
     "categoria": "agro",
     "tipo": "explicativo",
     "prompt_extra": "Explicativo didáctico sobre los tres cultivos extensivos clave de Argentina: zonas productoras, ciclo agrícola, peso en exportaciones, cadena de valor. Tono pedagógico, sin retenciones como debate central.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-14T13:04:31.133Z",
+    "sanity_id": "drafts.ai-soja-trigo-maiz-la-matriz-exportadora-argentina-para-no-entendidos"
   },
   {
     "id": "topic-035",
