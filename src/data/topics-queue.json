@@ -355,6 +355,9 @@
     "categoria": "agro",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre los derechos de exportación agropecuarios desde 2002: instrumento fiscal vs incentivo distorsivo, conflictos políticos (incluida la Resolución 125 de 2008). Marco histórico, sin tomar partido.",
-    "prioridad": 2
+    "prioridad": 2,
+    "consumed": true,
+    "consumed_at": "2026-06-15T16:22:48.072Z",
+    "sanity_id": "drafts.ai-retenciones-la-pelea-historica-entre-el-campo-y-el-estado"
   }
 ]
