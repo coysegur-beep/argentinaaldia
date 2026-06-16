@@ -159,7 +159,10 @@
     "categoria": "economia",
     "tipo": "opinion",
     "prompt_extra": "Ensayo cultural-económico sobre por qué Argentina convive con el dólar como referencia psicológica, refugio y termómetro político. Tono ensayístico, voseo argentino.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-06-16T16:03:46.520Z",
+    "sanity_id": "drafts.ai-el-dolar-como-obsesion-nacional-mas-que-una-moneda-un-termometro-de-la-psiquis-a"
   },
   {
     "id": "topic-016",
