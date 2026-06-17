@@ -192,7 +192,10 @@
     "categoria": "provincias",
     "tipo": "opinion",
     "prompt_extra": "Reflexión sobre el régimen de promoción industrial fueguino (Ley 19.640): qué problemas resolvió, qué distorsiones generó, qué tensión hay entre soberanía territorial y costo fiscal. Voz editorial federal.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-06-17T14:29:31.413Z",
+    "sanity_id": "drafts.ai-tierra-del-fuego-un-pacto-entre-el-estado-la-industria-y-la-soberania-en-debate"
   },
   {
     "id": "topic-019",
