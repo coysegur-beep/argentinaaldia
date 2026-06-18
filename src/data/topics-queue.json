@@ -225,7 +225,10 @@
     "categoria": "cultura",
     "tipo": "opinion",
     "prompt_extra": "Ensayo literario sobre tres maneras distintas de relación con Argentina desde la obra (Borges: la biblioteca; Cortázar: el exilio; Saer: el litoral). Tono ensayístico de suplemento cultural, voseo aceptable.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-06-18T14:22:44.063Z",
+    "sanity_id": "drafts.ai-borges-cortazar-y-saer-tres-miradas-esenciales-sobre-el-ser-argentino"
   },
   {
     "id": "topic-022",
