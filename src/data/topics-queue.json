@@ -236,7 +236,10 @@
     "categoria": "cultura",
     "tipo": "opinion",
     "prompt_extra": "Ensayo sobre la persistencia (y resignificación) de las librerías argentinas frente al consumo digital. Buenos Aires como ciudad lectora, librerías de barrio, ferias del libro. Voz editorial cálida.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-06-19T14:21:58.065Z",
+    "sanity_id": "drafts.ai-la-libreria-como-refugio-en-la-era-del-scroll-infinito"
   },
   {
     "id": "topic-023",
