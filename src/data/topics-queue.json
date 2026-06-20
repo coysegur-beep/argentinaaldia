@@ -269,7 +269,10 @@
     "categoria": "sociedad",
     "tipo": "opinion",
     "prompt_extra": "Ensayo sobre el mate como práctica social transversal: ritual cotidiano, mercado yerbatero (Misiones/Corrientes), símbolo de identidad rioplatense. Tono ensayístico, voseo argentino.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-06-20T12:59:09.318Z",
+    "sanity_id": "drafts.ai-el-mate-como-objeto-politico-identidad-ritual-y-mercado-en-la-argentina"
   },
   {
     "id": "topic-026",
