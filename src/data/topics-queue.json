@@ -313,7 +313,10 @@
     "categoria": "deportes",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre el rendimiento internacional argentino en disciplinas no futboleras: Las Leonas (hockey), Los Pumas (rugby), tradición tenística. Por qué tienen éxito a pesar de menor inversión y exposición.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-06-21T13:18:03.179Z",
+    "sanity_id": "drafts.ai-hockey-rugby-tenis-la-argentina-que-se-destaca-mas-alla-del-futbol"
   },
   {
     "id": "topic-030",
