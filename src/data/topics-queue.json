@@ -335,7 +335,10 @@
     "categoria": "espectaculos",
     "tipo": "opinion",
     "prompt_extra": "Ensayo sobre la nueva ola del pop argentino con proyección internacional (Bizarrap, Lali Espósito, Tini Stoessel, Duki). Industria, redes sociales, productores. Tono cultural, no fan, voseo argentino.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-06-23T13:46:51.422Z",
+    "sanity_id": "drafts.ai-el-pop-argentino-como-exportacion-global-de-bizarrap-a-lali-un-fenomeno-en-ascen"
   },
   {
     "id": "topic-032",
