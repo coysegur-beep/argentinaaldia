@@ -357,7 +357,10 @@
     "categoria": "mundo",
     "tipo": "analisis",
     "prompt_extra": "Análisis sobre los giros recurrentes de la política exterior argentina (alianzas, no alineamiento, pendulación EEUU/China/Latam). Marco histórico, sin culpar a una gestión específica.",
-    "prioridad": 3
+    "prioridad": 3,
+    "consumed": true,
+    "consumed_at": "2026-06-25T13:26:38.620Z",
+    "sanity_id": "drafts.ai-por-que-a-argentina-le-cuesta-una-politica-exterior-estable"
   },
   {
     "id": "topic-034",
